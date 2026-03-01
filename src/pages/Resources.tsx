@@ -1,7 +1,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Download, FileText, CheckCircle, ArrowRight } from 'lucide-react';
+import { Download, FileText, CheckCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { Logo } from '../components/Logo';
+import { db } from '../lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const resources = [
   {
@@ -31,6 +33,38 @@ const resources = [
 ];
 
 export function Resources() {
+  const [signupName, setSignupName] = React.useState('');
+  const [signupEmail, setSignupEmail] = React.useState('');
+  const [signupLoading, setSignupLoading] = React.useState(false);
+  const [signupSuccess, setSignupSuccess] = React.useState(false);
+  const [signupError, setSignupError] = React.useState<string | null>(null);
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSignupLoading(true);
+    setSignupError(null);
+    try {
+      if (import.meta.env.VITE_FIREBASE_API_KEY) {
+        await addDoc(collection(db, 'resource_signups'), {
+          name: signupName,
+          email: signupEmail,
+          createdAt: serverTimestamp(),
+        });
+      } else {
+        console.warn('Firebase not configured. Signup simulated.');
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+      setSignupSuccess(true);
+      setSignupName('');
+      setSignupEmail('');
+    } catch (err) {
+      console.error('Error saving signup:', err);
+      setSignupError('Unable to save your signup. Please check your connection and try again.');
+    } finally {
+      setSignupLoading(false);
+    }
+  };
+
   return (
     <div className="py-24 bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -92,24 +126,56 @@ export function Resources() {
               </ul>
             </div>
             <div className="bg-cream/5 backdrop-blur-md border border-cream/10 p-8 rounded-3xl">
-              <form className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  className="w-full bg-cream/10 border border-cream/20 rounded-2xl px-6 py-4 text-cream focus:outline-none focus:border-gold/50 transition-colors"
-                />
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className="w-full bg-cream/10 border border-cream/20 rounded-2xl px-6 py-4 text-cream focus:outline-none focus:border-gold/50 transition-colors"
-                />
-                <button className="w-full bg-gold text-navy font-bold py-4 rounded-2xl hover:bg-opacity-90 transition-all flex items-center justify-center group">
-                  Get Free Access <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
-                </button>
-                <p className="text-center text-cream/40 text-xs mt-4">
-                  We respect your privacy. Unsubscribe at any time.
-                </p>
-              </form>
+              {signupSuccess ? (
+                <div className="text-center py-8">
+                  <CheckCircle className="text-gold mx-auto mb-4" size={48} />
+                  <p className="text-cream font-bold text-lg">You're in!</p>
+                  <p className="text-cream/60 text-sm mt-2">Check your inbox for access details.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSignup} className="space-y-4">
+                  {signupError && (
+                    <div className="bg-red-900/30 text-red-300 p-3 rounded-xl text-sm border border-red-700/30">
+                      {signupError}
+                    </div>
+                  )}
+                  <input
+                    required
+                    type="text"
+                    placeholder="Your Name"
+                    value={signupName}
+                    onChange={e => setSignupName(e.target.value)}
+                    className="w-full bg-cream/10 border border-cream/20 rounded-2xl px-6 py-4 text-cream focus:outline-none focus:border-gold/50 transition-colors"
+                  />
+                  <input
+                    required
+                    type="email"
+                    placeholder="Your Email"
+                    value={signupEmail}
+                    onChange={e => setSignupEmail(e.target.value)}
+                    className="w-full bg-cream/10 border border-cream/20 rounded-2xl px-6 py-4 text-cream focus:outline-none focus:border-gold/50 transition-colors"
+                  />
+                  <button
+                    type="submit"
+                    disabled={signupLoading}
+                    className="w-full bg-gold text-navy font-bold py-4 rounded-2xl hover:bg-opacity-90 transition-all flex items-center justify-center group disabled:opacity-70"
+                  >
+                    {signupLoading ? (
+                      <>
+                        <Loader2 className="animate-spin mr-2" size={20} />
+                        SUBMITTING...
+                      </>
+                    ) : (
+                      <>
+                        Get Free Access <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+                      </>
+                    )}
+                  </button>
+                  <p className="text-center text-cream/40 text-xs mt-4">
+                    We respect your privacy. Unsubscribe at any time.
+                  </p>
+                </form>
+              )}
             </div>
           </div>
         </div>
