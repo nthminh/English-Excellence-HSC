@@ -1,15 +1,51 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Star, Upload, Send, CheckCircle2 } from 'lucide-react';
+import { Star, Upload, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import { Logo } from '../components/Logo';
+import { db } from '../lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 export function LeaveReview() {
   const [submitted, setSubmitted] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
   const [rating, setRating] = React.useState(5);
+  const [formData, setFormData] = React.useState({
+    name: '',
+    school: '',
+    result: '',
+    testimonial: '',
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      if (import.meta.env.VITE_FIREBASE_API_KEY) {
+        await addDoc(collection(db, 'reviews'), {
+          ...formData,
+          rating,
+          createdAt: serverTimestamp(),
+          status: 'pending',
+        });
+      } else {
+        console.warn('Firebase not configured. Submission simulated.');
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+      setSubmitted(true);
+    } catch (err) {
+      console.error('Error submitting review:', err);
+      setError('Unable to submit your review. Please check your connection and try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
@@ -28,7 +64,11 @@ export function LeaveReview() {
             Your testimonial has been submitted successfully. We appreciate your feedback and are proud of your success!
           </p>
           <button
-            onClick={() => setSubmitted(false)}
+            onClick={() => {
+              setSubmitted(false);
+              setFormData({ name: '', school: '', result: '', testimonial: '' });
+              setRating(5);
+            }}
             className="text-gold font-bold hover:underline"
           >
             Submit another review
@@ -56,11 +96,19 @@ export function LeaveReview() {
           className="bg-navy p-8 md:p-12 rounded-[3rem] shadow-2xl border border-gold/20"
         >
           <form onSubmit={handleSubmit} className="space-y-8">
+            {error && (
+              <div className="bg-red-900/30 text-red-300 p-4 rounded-2xl text-sm border border-red-700/30">
+                {error}
+              </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
                 <label className="text-cream/60 text-xs font-bold uppercase tracking-widest ml-1">Your Name</label>
                 <input
                   required
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
                   type="text"
                   className="w-full bg-cream/5 border border-cream/10 rounded-2xl px-6 py-4 text-cream focus:outline-none focus:border-gold/50 transition-colors"
                   placeholder="John Doe"
@@ -70,6 +118,9 @@ export function LeaveReview() {
                 <label className="text-cream/60 text-xs font-bold uppercase tracking-widest ml-1">Your School</label>
                 <input
                   required
+                  name="school"
+                  value={formData.school}
+                  onChange={handleInputChange}
                   type="text"
                   className="w-full bg-cream/5 border border-cream/10 rounded-2xl px-6 py-4 text-cream focus:outline-none focus:border-gold/50 transition-colors"
                   placeholder="e.g. Sydney Grammar"
@@ -81,6 +132,9 @@ export function LeaveReview() {
               <div className="space-y-2">
                 <label className="text-cream/60 text-xs font-bold uppercase tracking-widest ml-1">HSC Result (Optional)</label>
                 <input
+                  name="result"
+                  value={formData.result}
+                  onChange={handleInputChange}
                   type="text"
                   className="w-full bg-cream/5 border border-cream/10 rounded-2xl px-6 py-4 text-cream focus:outline-none focus:border-gold/50 transition-colors"
                   placeholder="e.g. Band 6 (95)"
@@ -107,6 +161,9 @@ export function LeaveReview() {
               <label className="text-cream/60 text-xs font-bold uppercase tracking-widest ml-1">Your Testimonial</label>
               <textarea
                 required
+                name="testimonial"
+                value={formData.testimonial}
+                onChange={handleInputChange}
                 className="w-full bg-cream/5 border border-cream/10 rounded-2xl px-6 py-4 text-cream focus:outline-none focus:border-gold/50 transition-colors min-h-[160px]"
                 placeholder="Share your experience with English Excellence..."
               />
@@ -123,10 +180,20 @@ export function LeaveReview() {
 
             <button
               type="submit"
-              className="w-full bg-gold text-navy font-bold py-5 rounded-2xl hover:bg-opacity-90 transition-all flex items-center justify-center group text-lg"
+              disabled={loading}
+              className="w-full bg-gold text-navy font-bold py-5 rounded-2xl hover:bg-opacity-90 transition-all flex items-center justify-center group text-lg disabled:opacity-70"
             >
-              Submit Testimonial
-              <Send className="ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
+              {loading ? (
+                <>
+                  <Loader2 className="animate-spin mr-2" size={20} />
+                  SUBMITTING...
+                </>
+              ) : (
+                <>
+                  Submit Testimonial
+                  <Send className="ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
+                </>
+              )}
             </button>
           </form>
         </motion.div>
