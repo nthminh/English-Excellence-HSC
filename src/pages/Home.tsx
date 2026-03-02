@@ -1,32 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Star, Users, BookOpen, Award } from 'lucide-react';
-import { motion } from 'motion/react';
-import { Logo } from '../components/Logo';
+import { motion } from 'framer-motion';
 import { IMAGES } from '../constants/images';
 
 export function Home() {
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-navy text-cream pt-20 pb-32">
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,#d8a444_0%,transparent_70%)]" />
+      <section className="relative bg-navy text-cream pt-20 pb-32 overflow-hidden">
+        <div className="absolute inset-0 opacity-5 text-9xl font-extrabold text-cream/50 select-none pointer-events-none flex items-center justify-center">
+          <span className="-translate-x-1/4">EXCELLENCE</span>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center space-x-2 bg-gold/10 border border-gold/20 rounded-full px-4 py-1 mb-8">
-                <span className="w-2 h-2 bg-gold rounded-full animate-pulse" />
-                <span className="text-gold text-xs font-bold uppercase tracking-widest">Premium HSC Tutoring</span>
-              </div>
-              <h1 className="text-5xl md:text-7xl font-serif font-bold leading-[1.1] mb-8">
-                One-on-one HSC English tutoring that <span className="text-gold italic underline decoration-gold/30 underline-offset-8">guarantees improvement</span>... otherwise its free
+              <p className="text-2xl text-gold font-sans mb-4">0431 878 221</p>
+              <div className="h-0.5 w-32 bg-gold mb-6"></div>
+              <h1
+                className="text-5xl md:text-6xl font-sans font-bold leading-[1.1] mb-8"
+                style={{ textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5)' }}
+              >
+                One-on-one HSC English tutoring that guarantees improvement
               </h1>
               <p className="text-xl text-cream/70 mb-10 leading-relaxed max-w-xl">
                 Unlock your potential with personalized strategies, expert feedback, and a proven track record of Band 6 results.
@@ -39,50 +39,25 @@ export function Home() {
                   Book Your Free Trial
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
                 </Link>
-                <Link
-                  to="/resources"
-                  className="border border-cream/20 hover:border-gold/50 px-8 py-4 rounded-full font-bold text-lg transition-all flex items-center justify-center"
-                >
-                  Explore Free Resources
-                </Link>
-              </div>
-              
-              <div className="mt-12 flex items-center space-x-6">
-                <div className="flex -space-x-3">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-navy bg-gold/20 flex items-center justify-center overflow-hidden">
-                      <img src={IMAGES.studentPlaceholder(i)} alt="Student" referrerPolicy="no-referrer" />
-                    </div>
-                  ))}
-                </div>
-                <div className="text-sm">
-                  <div className="flex text-gold mb-1">
-                    {[1, 2, 3, 4, 5].map((i) => <Star key={i} size={14} fill="currentColor" />)}
-                  </div>
-                  <p className="text-cream/60 font-medium">Trusted by 500+ HSC students</p>
-                </div>
               </div>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="relative"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative flex items-center justify-center lg:justify-end"
             >
-              <div className="relative z-10 rounded-3xl overflow-hidden border-4 border-gold/20 shadow-2xl">
-                <img
-                  src={IMAGES.hero}
-                  alt="Tutoring Session"
-                  className="w-full h-auto"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent" />
+              <div className="relative w-[500px] h-[500px] xl:w-[600px] xl:h-[600px]">
+                <div className="absolute inset-0 rounded-full overflow-hidden bg-gold/10 border-2 border-gold/10 shadow-2xl flex items-center justify-center">
+                  <img
+                    src={IMAGES.hero}
+                    alt="Tutoring Session"
+                    className="w-full h-full object-cover opacity-40"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
               </div>
-              
-              {/* Decorative elements */}
-              <div className="absolute -top-10 -right-10 w-40 h-40 bg-gold/10 rounded-full blur-3xl" />
-              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-gold/20 rounded-full blur-3xl" />
             </motion.div>
           </div>
         </div>
@@ -123,20 +98,23 @@ export function Home() {
               {
                 icon: <Users className="text-gold" size={32} />,
                 title: 'Personalized 1-on-1',
-                desc: 'Every student is unique. We tailor our teaching style and focus areas to match your specific strengths and weaknesses.'
+                desc: 'Every student is unique. We tailor our teaching style and focus areas to match your specific strengths and weaknesses.',
               },
               {
                 icon: <BookOpen className="text-gold" size={32} />,
                 title: 'Exclusive Resources',
-                desc: 'Gain access to our library of Band 6 essays, detailed text guides, and marked responses with examiner feedback.'
+                desc: 'Gain access to our library of Band 6 essays, detailed text guides, and marked responses with examiner feedback.',
               },
               {
                 icon: <CheckCircle className="text-gold" size={32} />,
                 title: 'Unlimited Feedback',
-                desc: 'Submit your drafts anytime. We provide detailed, line-by-line feedback within 24-48 hours to ensure rapid improvement.'
-              }
+                desc: 'Submit your drafts anytime. We provide detailed, line-by-line feedback within 24-48 hours to ensure rapid improvement.',
+              },
             ].map((feature, i) => (
-              <div key={i} className="group p-8 bg-white rounded-3xl border border-navy/5 shadow-sm hover:shadow-xl transition-all hover:-translate-y-2">
+              <div
+                key={i}
+                className="group p-8 bg-white rounded-3xl border border-navy/5 shadow-sm hover:shadow-xl transition-all hover:-translate-y-2"
+              >
                 <div className="w-16 h-16 bg-navy rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
                   {feature.icon}
                 </div>
@@ -144,30 +122,6 @@ export function Home() {
                 <p className="text-navy/60 leading-relaxed">{feature.desc}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 bg-navy relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gold/5 skew-x-12 transform translate-x-1/4" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="bg-gold rounded-[3rem] p-12 md:p-20 text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-12">
-            <div className="max-w-2xl">
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-navy mb-6 leading-tight">
-                Ready to transform your English results?
-              </h2>
-              <p className="text-navy/80 text-xl font-medium">
-                Book a free 30-minute trial session today and see the difference expert guidance makes.
-              </p>
-            </div>
-            <Link
-              to="/inquiry"
-              className="bg-navy text-cream px-10 py-5 rounded-full font-bold text-xl hover:bg-opacity-90 transition-all shadow-2xl flex items-center group whitespace-nowrap"
-            >
-              Get Started Now
-              <ArrowRight className="ml-3 group-hover:translate-x-1 transition-transform" size={24} />
-            </Link>
           </div>
         </div>
       </section>

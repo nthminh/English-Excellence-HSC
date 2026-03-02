@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Logo } from '../components/Logo';
 import { IMAGES } from '../constants/images';
 
 export function About() {
@@ -77,18 +76,15 @@ export function About() {
             </div>
           </div>
 
-          <div className="mt-20 relative self-end lg:self-auto">
+          <div className="mt-20 relative self-end">
             <div className="relative inline-block">
-              <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl">
+              <div className="w-80 h-80 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl">
                 <img 
                   src={IMAGES.founder} 
                   alt="Leo Bui - Founder" 
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
                 />
-              </div>
-              <div className="absolute -bottom-4 -right-4 md:-bottom-8 md:-right-8 scale-75 md:scale-100">
-                <Logo size={160} />
               </div>
             </div>
           </div>

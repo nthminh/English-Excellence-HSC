@@ -19,15 +19,15 @@ export function Navbar() {
   const location = useLocation();
 
   return (
-    <nav className="sticky top-0 z-50 bg-white text-black shadow-lg">
+    <nav className="sticky top-0 z-50 shadow-lg bg-navy">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-4">
               <Logo size={64} />
               <div className="flex flex-col">
-                <span className="text-xl font-serif font-bold leading-tight tracking-tight">ENGLISH</span>
-                <span className="text-xs font-sans font-medium tracking-[0.3em] text-gold uppercase">EXCELLENCE</span>
+                <span className="text-md font-serif font-bold leading-tight text-white">ENGLISH</span>
+                <span className="text-[10px] font-sans font-medium tracking-[0.2em] text-gold uppercase">EXCELLENCE</span>
               </div>
             </Link>
           </div>
@@ -40,7 +40,7 @@ export function Navbar() {
                 to={item.path}
                 className={cn(
                   "text-sm font-medium transition-colors hover:text-gold",
-                  location.pathname === item.path ? "text-gold border-b-2 border-gold" : "text-black/80"
+                  location.pathname === item.path ? "text-gold border-b-2 border-gold" : "text-white/80"
                 )}
               >
                 {item.name}
@@ -58,7 +58,7 @@ export function Navbar() {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-black hover:text-gold transition-colors"
+              className="text-white hover:text-gold transition-colors"
             >
               {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -68,7 +68,7 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-black/10">
+        <div className="md:hidden border-t border-black/10 bg-navy">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navItems.map((item) => (
               <Link
@@ -77,7 +77,7 @@ export function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className={cn(
                   "block px-3 py-2 rounded-md text-base font-medium",
-                  location.pathname === item.path ? "text-gold bg-black/5" : "text-black/80 hover:text-gold hover:bg-black/5"
+                  location.pathname === item.path ? "text-gold bg-black/5" : "text-white/80 hover:text-gold hover:bg-black/5"
                 )}
               >
                 {item.name}
