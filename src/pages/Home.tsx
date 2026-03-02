@@ -23,8 +23,7 @@ export function Home() {
               <p className="text-2xl text-gold font-sans mb-4">0431 878 221</p>
               <div className="h-0.5 w-32 bg-gold mb-6"></div>
               <h1
-                className="text-5xl md:text-6xl font-sans font-bold leading-[1.1] mb-8"
-                style={{ textShadow: '2px 2px 8px rgba(0, 0, 0, 0.5)' }}
+                className="text-5xl md:text-6xl font-sans font-bold leading-[1.1] mb-8 text-gold text-center"
               >
                 One-on-one HSC English tutoring that guarantees improvement
               </h1>
