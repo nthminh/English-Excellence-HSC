@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Star, Upload, Send, CheckCircle2, Loader2 } from 'lucide-react';
-import { Logo } from '../components/Logo';
 import { db } from '../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
@@ -82,7 +81,7 @@ export function LeaveReview() {
     <div className="py-24 bg-cream">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <Logo size={80} className="mx-auto mb-6" />
+        <img src="https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/logogray.png?alt=media&token=a7fca0d1-c096-459f-9ccd-faf66a81a68e" alt="Gray Logo" style={{width: 80, height: 'auto'}} className="mx-auto mb-6 logo-spin" />
           <h2 className="text-gold font-sans font-bold text-sm uppercase tracking-[0.3em] mb-4">Share Your Story</h2>
           <h1 className="text-5xl md:text-6xl font-serif font-bold text-navy mb-8">Leave a <span className="text-gold italic">Testimonial</span></h1>
           <p className="text-navy/60 text-xl leading-relaxed">

@@ -89,15 +89,7 @@ export function Resources() {
               <div className="absolute inset-0 bg-gold/5 rounded-l-[3rem]" />
               {/* Placeholder book cover — replace src with your actual book image URL */}
               <div className="relative z-10 group">
-                <div className="w-56 h-72 bg-cream/10 border-2 border-dashed border-gold/40 rounded-2xl flex flex-col items-center justify-center text-center p-6 shadow-2xl group-hover:border-gold/70 transition-all cursor-pointer">
-                  <BookOpen className="text-gold mb-4" size={48} />
-                  <p className="text-cream/60 text-sm font-sans leading-relaxed">
-                    Add your book cover image here
-                  </p>
-                  <p className="text-gold/60 text-xs mt-2 font-sans">
-                    Replace this placeholder with your image
-                  </p>
-                </div>
+              <img src="https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/booksample.png?alt=media&token=2d9eedc9-1e90-418f-ac73-5618d4b07d06" alt="Book Sample" className="w-56 h-auto rounded-2xl shadow-2xl group-hover:shadow-3xl transition-all" />
                 {/* FREE badge */}
                 <div className="absolute -top-4 -right-4 bg-gold text-navy font-sans font-black text-sm px-4 py-2 rounded-full shadow-lg rotate-6 uppercase tracking-widest">
                   FREE

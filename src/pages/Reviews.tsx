@@ -7,32 +7,32 @@ import { IMAGES } from '../constants/images';
 
 const reviews = [
   {
-    name: 'Sarah M.',
-    school: 'North Sydney Girls',
-    result: 'Band 6 (96)',
-    quote: 'The feedback was incredibly detailed. I went from a low Band 5 to a high Band 6 in just two terms. The essay structures provided are a game-changer.',
-    image: IMAGES.reviewPlaceholder('sarah')
+    name: 'Jasmine Hakky',
+    school: 'Previous Student',
+    result: 'Band 6',
+    quote: 'Guys if your looking for a tutor that will actually teach you how to write a essay or anything not just some useless activities this is your guy I graduated this year and he\'s been tutoring me since the end of my year 10 class and I went from failing to slowly building up my marks and actually enjoying English and knowing how to write I can go on and on about how good he is but you should try for yourself you wouldn\'t regret it he\'s not just a tutor but honestly a great person for life advises and truely makes sure you put your all in your work',
+    image: IMAGES.reviewPlaceholder('jasmine')
   },
   {
-    name: 'James L.',
-    school: 'Sydney Grammar',
-    result: 'Band 6 (94)',
-    quote: 'My tutor really understood the texts on a deep level. They helped me develop a unique voice that examiners love. Highly recommend!',
-    image: IMAGES.reviewPlaceholder('james')
+    name: 'F',
+    school: 'Parent',
+    result: 'Improved Grades',
+    quote: 'Super happy the result of my son\'s grades after being tutored by Leo in just a year. Would recommend him as he not only keeps my kid accountable but also keeps me as the parent with clear communication and care. Thank you!',
+    image: IMAGES.reviewPlaceholder('f')
   },
   {
-    name: 'Emily T.',
-    school: 'Baulkham Hills High',
-    result: 'Band 6 (95)',
-    quote: 'The marked responses with examiner feedback showed me exactly what I was missing. It made the HSC English curriculum feel manageable.',
-    image: IMAGES.reviewPlaceholder('emily')
+    name: 'Nina Hermez',
+    school: 'Previous Student',
+    result: 'Band 6',
+    quote: 'Leo is an excellent English tutor who provides amazing constructive and detailed feedback! Leo has helped me push my essay from a band 5 to a band 6 with the feedback he provided. I wish you all the best!',
+    image: IMAGES.reviewPlaceholder('nina')
   },
   {
-    name: 'David K.',
-    school: 'Knox Grammar',
-    result: 'Band 6 (93)',
-    quote: 'I used to struggle with analysis, but the personalized sessions helped me break down complex ideas into clear, sophisticated arguments.',
-    image: IMAGES.reviewPlaceholder('david')
+    name: 'Matthew Marshall',
+    school: 'Previous Student',
+    result: 'Improved Marks',
+    quote: 'The resources I\'ve received from here are just phenomenal. They are really well set out and easy to follow and understand, making it perfect for learning how to improve your own. I would and will represent English Excellence to any student looking to improve their marks or ensure that they maximise their marks. Leo is very helpful and amazing to work with. He helped me out a lot and I am very grateful for his assistance.',
+    image: IMAGES.reviewPlaceholder('matthew')
   }
 ];
 
@@ -44,7 +44,7 @@ export function Reviews() {
           <h2 className="text-gold font-sans font-bold text-sm uppercase tracking-[0.3em] mb-4">Student Success</h2>
           <h1 className="text-5xl md:text-6xl font-serif font-bold text-navy mb-8">Real Stories, <span className="text-gold italic">Real Results</span></h1>
           <p className="text-navy/60 text-xl leading-relaxed">
-            Our students consistently achieve Band 6 results and reach their full potential. Here's what they have to say about their experience.
+            Our students consistently achieve Band 6 results and reach their full potential. Here\'s what they have to say about their experience.
           </p>
         </div>
 
@@ -88,7 +88,7 @@ export function Reviews() {
           </div>
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-navy mb-8 relative z-10">Are you a past student?</h2>
           <p className="text-navy/70 text-xl font-medium mb-12 max-w-2xl mx-auto">
-            We'd love to hear about your success! Share your story and help inspire the next generation of HSC students.
+            We\'d love to hear about your success! Share your story and help inspire the next generation of HSC students.
           </p>
           <Link
             to="/leave-review"
