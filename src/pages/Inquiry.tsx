@@ -7,17 +7,12 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const SchoolLogos = () => {
   return (
-    <div className="relative w-full aspect-square max-w-[500px] mx-auto bg-[#02074d] rounded-full p-12 overflow-hidden shadow-2xl">
-      <div className="grid grid-cols-3 gap-4 h-full items-center justify-items-center">
-        {IMAGES.schools.map((school, i) => (
-          <div key={i} className="flex flex-col items-center text-center">
-            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-1 border-2 border-gold/20 overflow-hidden">
-              <img src={school.logo} alt={school.name} className="w-10 h-10 object-contain" />
-            </div>
-            <span className="text-[8px] font-bold text-white leading-tight uppercase">{school.name}</span>
-          </div>
-        ))}
-      </div>
+    <div className="relative w-full aspect-square max-w-[500px] mx-auto overflow-hidden shadow-2xl rounded-2xl">
+      <img 
+        src="https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/94.png?alt=media&token=b9e3c01b-00ee-46a9-a5c2-bc3b6eee2852" 
+        alt="Featured Schools" 
+        className="w-full h-full object-cover" 
+      />
     </div>
   );
 };

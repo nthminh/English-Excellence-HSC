@@ -78,20 +78,6 @@ export function Home() {
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent" />
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="bg-cream/10 backdrop-blur-md border border-cream/20 rounded-2xl p-6">
-                    <div className="flex items-center space-x-4 mb-4">
-                      <Logo size={48} />
-                      <div>
-                        <h4 className="font-serif font-bold text-lg">99.95 ATAR Mentor</h4>
-                        <p className="text-xs text-cream/60 uppercase tracking-widest">Expert Guidance</p>
-                      </div>
-                    </div>
-                    <p className="text-sm text-cream/80 italic">
-                      "Our students don't just learn English; they master the art of critical thinking and sophisticated analysis required for Band 6 success."
-                    </p>
-                  </div>
-                </div>
               </div>
               
               {/* Decorative elements */}
