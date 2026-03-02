@@ -4,7 +4,7 @@
 
 # English Excellence - HSC Tutoring
 
-Premium 1-on-1 HSC English tutoring focused on writing mastery, strategic feedback, and guaranteed Band 6 results.
+Premium HSC English tutoring focused on writing mastery, strategic feedback, and guaranteed Band 6 results.
 
 ## Run Locally
 

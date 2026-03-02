@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Download, FileText, CheckCircle, ArrowRight, Loader2, BookOpen, MessageSquare, Award, Users } from 'lucide-react';
 import { db } from '../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -85,16 +85,33 @@ export function Resources() {
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
             {/* Book Image Area */}
-            <div className="relative flex items-center justify-center p-12 bg-navy/95 min-h-[420px]">
-              <div className="absolute inset-0 bg-gold/5 rounded-l-[3rem]" />
-              {/* Placeholder book cover — replace src with your actual book image URL */}
-              <div className="relative z-10 group">
-              <img src="https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/booksample.png?alt=media&token=2d9eedc9-1e90-418f-ac73-5618d4b07d06" alt="Book Sample" className="w-56 h-auto rounded-2xl shadow-2xl group-hover:shadow-3xl transition-all" />
-                {/* FREE badge */}
-                <div className="absolute -top-4 -right-4 bg-gold text-navy font-sans font-black text-sm px-4 py-2 rounded-full shadow-lg rotate-6 uppercase tracking-widest">
-                  FREE
-                </div>
-              </div>
+            <div className="relative flex items-center justify-center p-12 bg-navy/95 min-h-[420px]" style={{ perspective: '1200px' }}>
+                <div className="absolute inset-0 bg-gold/5 rounded-l-[3rem]" />
+                <motion.div
+                    className="relative z-10 w-72 h-96"
+                    whileHover={{ rotateY: -18, x: -10 }}
+                    transition={{ duration: 0.4, ease: 'easeOut' }}
+                    style={{ transformStyle: 'preserve-3d' }}
+                >
+                    <img
+                        src="https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/booksample.png?alt=media&token=2d9eedc9-1e90-418f-ac73-5618d4b07d06"
+                        alt="Book Sample"
+                        className="absolute w-full h-full object-cover rounded-lg shadow-2xl"
+                    />
+                    {/* Book spine effect */}
+                    <div
+                        className="absolute left-0 top-0 h-full w-8 bg-gray-800"
+                        style={{
+                            transform: 'rotateY(-90deg) translateX(-16px)',
+                            transformOrigin: 'right',
+                            backfaceVisibility: 'hidden',
+                            backgroundImage: 'linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(255,255,255,0.1) 100%)',
+                        }}
+                    ></div>
+                    <div className="absolute -top-4 -right-4 bg-gold text-navy font-sans font-black text-sm px-4 py-2 rounded-full shadow-lg rotate-6 uppercase tracking-widest z-20">
+                        FREE
+                    </div>
+                </motion.div>
             </div>
 
             {/* Stats & Info Area */}

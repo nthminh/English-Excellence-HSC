@@ -25,7 +25,7 @@ export function Home() {
               <h1
                 className="text-5xl md:text-6xl font-sans font-bold leading-[1.1] mb-8 text-gold text-center"
               >
-                One-on-one HSC English tutoring that guarantees improvement
+                HSC English tutoring that guarantees improvement
               </h1>
               <p className="text-xl text-cream/70 mb-10 leading-relaxed max-w-xl">
                 Unlock your potential with personalized strategies, expert feedback, and a proven track record of Band 6 results.
@@ -96,7 +96,7 @@ export function Home() {
             {[
               {
                 icon: <Users className="text-gold" size={32} />,
-                title: 'Personalized 1-on-1',
+                title: 'Personalized Tutoring',
                 desc: 'Every student is unique. We tailor our teaching style and focus areas to match your specific strengths and weaknesses.',
               },
               {

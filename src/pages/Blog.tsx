@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Calendar, User, ArrowRight, Tag } from 'lucide-react';
-import { Logo } from '../components/Logo';
 import { IMAGES } from '../constants/images';
 
 const posts = [
@@ -36,7 +35,7 @@ export function Blog() {
     <div className="py-24 bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <Logo size={80} className="mx-auto mb-6" />
+        <img src="https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/logogray.png?alt=media&token=a7fca0d1-c096-459f-9ccd-faf66a81a68e" alt="Gray Logo" style={{width: 80, height: 'auto'}} className="mx-auto mb-6 logo-spin" />
           <h2 className="text-gold font-sans font-bold text-sm uppercase tracking-[0.3em] mb-4">Blog & Updates</h2>
           <h1 className="text-5xl md:text-6xl font-serif font-bold text-navy mb-8">Insights for <span className="text-gold italic">HSC Success</span></h1>
           <p className="text-navy/60 text-xl leading-relaxed">
