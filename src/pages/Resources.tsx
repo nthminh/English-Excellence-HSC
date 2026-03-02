@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Download, FileText, CheckCircle, ArrowRight, Loader2 } from 'lucide-react';
+import { Download, FileText, CheckCircle, ArrowRight, Loader2, BookOpen, MessageSquare, Award, Users } from 'lucide-react';
 import { db } from '../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
@@ -75,6 +75,73 @@ export function Resources() {
             Sign up to access our curated library of guides, essays, marked responses, and feedback. Everything you need to start your journey to Band 6.
           </p>
         </div>
+
+        {/* FREE Book Showcase Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-20 bg-navy rounded-[3rem] overflow-hidden"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+            {/* Book Image Area */}
+            <div className="relative flex items-center justify-center p-12 bg-navy/95 min-h-[420px]">
+              <div className="absolute inset-0 bg-gold/5 rounded-l-[3rem]" />
+              {/* Placeholder book cover — replace src with your actual book image URL */}
+              <div className="relative z-10 group">
+                <div className="w-56 h-72 bg-cream/10 border-2 border-dashed border-gold/40 rounded-2xl flex flex-col items-center justify-center text-center p-6 shadow-2xl group-hover:border-gold/70 transition-all cursor-pointer">
+                  <BookOpen className="text-gold mb-4" size={48} />
+                  <p className="text-cream/60 text-sm font-sans leading-relaxed">
+                    Add your book cover image here
+                  </p>
+                  <p className="text-gold/60 text-xs mt-2 font-sans">
+                    Replace this placeholder with your image
+                  </p>
+                </div>
+                {/* FREE badge */}
+                <div className="absolute -top-4 -right-4 bg-gold text-navy font-sans font-black text-sm px-4 py-2 rounded-full shadow-lg rotate-6 uppercase tracking-widest">
+                  FREE
+                </div>
+              </div>
+            </div>
+
+            {/* Stats & Info Area */}
+            <div className="p-12 flex flex-col justify-center bg-navy">
+              <div className="mb-2">
+                <span className="text-gold font-sans font-black text-xs uppercase tracking-[0.35em]">Completely Free</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold text-cream mb-3 leading-tight">
+                FREE HSC <span className="text-gold italic">Resources</span>
+              </h2>
+              <p className="text-cream/60 font-sans text-base mb-8 leading-relaxed">
+                Everything you need to excel in HSC English — written by tutors, built for students, and 100% free.
+              </p>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                {[
+                  { icon: <BookOpen size={20} />, value: '300+', label: 'Pages of Content' },
+                  { icon: <FileText size={20} />, value: '40+', label: 'Example Responses' },
+                  { icon: <MessageSquare size={20} />, value: '600+', label: 'Feedback Comments' },
+                  { icon: <Award size={20} />, value: '✓', label: 'Mark Values Included' },
+                ].map((stat) => (
+                  <div key={stat.label} className="bg-cream/5 border border-cream/10 rounded-2xl p-4 flex items-start gap-3">
+                    <span className="text-gold mt-0.5">{stat.icon}</span>
+                    <div>
+                      <p className="text-cream font-sans font-black text-xl leading-none">{stat.value}</p>
+                      <p className="text-cream/50 font-sans text-xs mt-1 leading-snug">{stat.label}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-2 text-cream/60 font-sans text-sm">
+                <Users size={16} className="text-gold" />
+                <span>Written by <span className="text-gold font-semibold">tutors</span> for students</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
           {resources.map((resource, i) => (
