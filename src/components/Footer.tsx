@@ -21,8 +21,8 @@ export function Footer() {
               Premium 1-on-1 HSC English tutoring that guarantees improvement. We focus on personalised strategies to help students excel in their final years.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-cream/60 hover:text-gold transition-colors"><Facebook size={20} /></a>
-              <a href="#" className="text-cream/60 hover:text-gold transition-colors"><Instagram size={20} /></a>
+              <a href="https://www.facebook.com/share/1KcyiCaw6U/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Visit our Facebook page" className="text-cream/60 hover:text-gold transition-colors"><Facebook size={20} /></a>
+              <a href="https://www.instagram.com/englishexcellencehsc?igsh=amNjeGpqdTRya2Fp&utm_source=qr" target="_blank" rel="noopener noreferrer" aria-label="Visit our Instagram profile" className="text-cream/60 hover:text-gold transition-colors"><Instagram size={20} /></a>
               <a href="#" className="text-cream/60 hover:text-gold transition-colors"><Linkedin size={20} /></a>
             </div>
           </div>
@@ -56,12 +56,16 @@ export function Footer() {
             <h3 className="text-gold font-serif font-bold text-lg mb-6">Contact Us</h3>
             <ul className="space-y-4 text-sm text-cream/70">
               <li className="flex items-start space-x-3">
-                <Mail size={18} className="text-gold shrink-0" />
-                <span>Leo@eehsc.com</span>
+                <a href="mailto:Leo@eehsc.com" aria-label="Email us at Leo@eehsc.com" className="flex items-start space-x-3 hover:text-gold transition-colors">
+                  <Mail size={18} className="text-gold shrink-0" />
+                  <span>Leo@eehsc.com</span>
+                </a>
               </li>
               <li className="flex items-start space-x-3">
-                <Phone size={18} className="text-gold shrink-0" />
-                <span>0431 878 221</span>
+                <a href="tel:0431878221" aria-label="Call us at 0431 878 221" className="flex items-start space-x-3 hover:text-gold transition-colors">
+                  <Phone size={18} className="text-gold shrink-0" />
+                  <span>0431 878 221</span>
+                </a>
               </li>
               <li className="flex items-start space-x-3">
                 <MapPin size={18} className="text-gold shrink-0" />
