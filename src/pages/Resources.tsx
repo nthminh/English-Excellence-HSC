@@ -3,6 +3,27 @@ import { motion } from 'framer-motion';
 import { Download, FileText, CheckCircle, ArrowRight, Loader2, BookOpen, MessageSquare, Award, Users } from 'lucide-react';
 import { db } from '../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import emailjs from '@emailjs/browser';
+
+const ADMIN_EMAIL = 'admin@eehsc.com';
+
+const STAY_IN_TOUCH_WELCOME_MESSAGE = `Hi there,
+
+Welcome to English Excellence! We're thrilled to have you join our community.
+
+As a subscriber, we will keep you up to date with:
+- The latest course information and new programmes
+- Exclusive promotions and special offers
+- Free resources, study guides, and HSC English tips
+- Important updates to help you excel in your HSC journey
+
+Stay tuned — exciting updates are on their way!
+
+If you have any questions, feel free to reach out at ${ADMIN_EMAIL} or call us at 0431 878 221.
+
+Warm regards,
+English Excellence
+${ADMIN_EMAIL}`;
 
 const detailedResources = [
   {
@@ -86,6 +107,25 @@ export function Resources() {
   const [signupSuccess, setSignupSuccess] = React.useState(false);
   const [signupError, setSignupError] = React.useState<string | null>(null);
 
+  const sendWelcomeEmail = async (name: string, email: string) => {
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_STAY_IN_TOUCH_TEMPLATE_ID;
+
+    if (!publicKey || !serviceId || !templateId) {
+      console.warn('Stay-in-touch email not sent: EmailJS environment variables are not configured (VITE_EMAILJS_PUBLIC_KEY, VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_STAY_IN_TOUCH_TEMPLATE_ID).');
+      return;
+    }
+
+    // Expected EmailJS template variables: to_email, user_name, message, from_email
+    await emailjs.send(serviceId, templateId, {
+      to_email: email,
+      user_name: name,
+      message: STAY_IN_TOUCH_WELCOME_MESSAGE,
+      from_email: ADMIN_EMAIL,
+    }, publicKey);
+  };
+
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setSignupLoading(true);
@@ -101,6 +141,13 @@ export function Resources() {
         console.warn('Firebase not configured. Signup simulated.');
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
+
+      try {
+        await sendWelcomeEmail(signupName, signupEmail);
+      } catch (emailErr) {
+        console.warn('Welcome email failed:', emailErr);
+      }
+
       setSignupSuccess(true);
       setSignupName('');
       setSignupEmail('');
@@ -216,13 +263,13 @@ export function Resources() {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-4xl font-serif font-bold text-cream mb-6 leading-tight">
-                Get full access to our <span className="text-gold italic">Resource Library</span>
+                Stay in Touch with <span className="text-gold italic">English Excellence</span>
               </h2>
               <ul className="space-y-4 mb-8">
                 {[
-                  'Weekly Band 6 essay breakdowns',
-                  'Exclusive text analysis guides',
-                  'Marked responses with examiner notes',
+                  'Latest course information and new programmes',
+                  'Exclusive promotions and special offers',
+                  'Free resources and HSC English study guides',
                   'Monthly HSC strategy webinars'
                 ].map((item, i) => (
                   <li key={i} className="flex items-center text-cream/80">
@@ -234,11 +281,11 @@ export function Resources() {
             </div>
             <div className="bg-cream/5 backdrop-blur-md border border-cream/10 p-8 rounded-3xl">
               {signupSuccess ? (
-                <div className="text-center py-8">
-                  <CheckCircle className="text-gold mx-auto mb-4" size={48} />
-                  <p className="text-cream font-bold text-lg">You're in!</p>
-                  <p className="text-cream/60 text-sm mt-2">Check your inbox for access details.</p>
-                </div>
+                  <div className="text-center py-8">
+                    <CheckCircle className="text-gold mx-auto mb-4" size={48} />
+                    <p className="text-cream font-bold text-lg">You're in!</p>
+                    <p className="text-cream/60 text-sm mt-2">Welcome aboard! Check your inbox for a welcome message from us.</p>
+                  </div>
               ) : (
                 <form onSubmit={handleSignup} className="space-y-4">
                   {signupError && (
@@ -274,7 +321,7 @@ export function Resources() {
                       </>
                     ) : (
                       <>
-                        Get Free Access <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+                        Stay in Touch <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
                       </>
                     )}
                   </button>
