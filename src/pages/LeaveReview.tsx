@@ -177,23 +177,34 @@ export function LeaveReview() {
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gold text-navy font-bold py-5 rounded-2xl hover:bg-opacity-90 transition-all flex items-center justify-center group text-lg disabled:opacity-70"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="animate-spin mr-2" size={20} />
-                  SUBMITTING...
-                </>
-              ) : (
-                <>
-                  Submit Testimonial
-                  <Send className="ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
-                </>
-              )}
-            </button>
+            <div className="space-y-4 pt-4">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gold text-navy font-bold py-5 rounded-2xl hover:bg-opacity-90 transition-all flex items-center justify-center group text-lg disabled:opacity-70"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="animate-spin mr-2" size={20} />
+                    SUBMITTING...
+                  </>
+                ) : (
+                  <>
+                    Submit Testimonial
+                    <Send className="ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
+                  </>
+                )}
+              </button>
+
+              <a
+                href="https://www.google.com/search?num=10&sca_esv=64c17adec9ee4761&sxsrf=ANbL-n4fnR0Jn0G4M_eNFvq-BlXvyRMk7g:1772427409334&kgmid=/g/11x6gk3n_y&query=English+Excellence&shem=dlvs1,epsd1,rimspe,rimspiose,shrtsdl&shndl=30&source=sh/x/loc/uni/m1/1&kgs=7dad79e7afb87875&utm_source=dlvs1,epsd1,rimspe,rimspiose,shrtsdl,sh/x/loc/uni/m1/1#lrd=0x809aaf294c1db837:0x618b67fadfbd83ef,1,,,,"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full text-center bg-transparent border-2 border-gold text-gold font-bold py-5 rounded-2xl hover:bg-gold hover:text-navy transition-colors duration-300 group text-lg"
+              >
+                Write a review on Google
+              </a>
+            </div>
           </form>
         </motion.div>
       </div>

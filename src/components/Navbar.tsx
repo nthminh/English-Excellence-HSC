@@ -24,10 +24,10 @@ export function Navbar() {
         <div className="flex justify-between h-20">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-4">
-              <Logo size={64} />
+              <Logo size={77} />
               <div className="flex flex-col">
-                <span className="text-md font-serif font-bold leading-tight text-white">ENGLISH</span>
-                <span className="text-[10px] font-sans font-medium tracking-[0.2em] text-gold uppercase">EXCELLENCE</span>
+                <span className="text-3xl font-serif font-bold leading-tight text-white">ENGLISH</span>
+                <span className="text-lg font-sans font-medium tracking-[0.2em] text-gold uppercase">EXCELLENCE</span>
               </div>
             </Link>
           </div>

@@ -19,17 +19,17 @@ export function About() {
 
           <div className="space-y-8 text-black text-lg md:text-xl leading-relaxed max-w-2xl">
             <p>
-              We're built on a simple truth: English is the only subject in the HSC that every student must take, 
+              We are built on a simple truth: English is the only subject in the HSC that every student must take, 
               and it must contribute to their ATAR. That makes it too important to be a "lagging" subject. 
-              Yet for most students, English is also the hardest—because it's not about memorising content, 
-              it's about learning how to write, refine, and rewrite. That's why our approach is unapologetically 
+              Yet for most students, English is also the hardest—because it is not about memorising content, 
+              it is about learning how to write, refine, and rewrite. That is why our approach is unapologetically 
               strategic and relentlessly practical. We maximise the one thing that actually drives improvement: 
               <span className="font-bold"> writing</span>. Not once. Not occasionally. But consistently, deliberately, 
               and with detailed feedback—so each student can progress from exactly where they are.
             </p>
 
             <p>
-              We don't believe in overnight fixes (they don't exist). We believe in systems: personalised and 
+              We do not believe in overnight fixes (they do not exist). We believe in systems: personalised and 
               clear feedback loops that turn effort into measurable, real improvement. Our students write more, 
               receive more guidance, and learn how to edit their own thinking with precision. Because in a 
               subject as competitive and as decisive as English, progress is never accidental.
@@ -40,9 +40,9 @@ export function About() {
               for both students and parents. We know how much pressure is wrapped up in results, rankings, and 
               futures that seem to hinge on a single number. And we also know that this period, difficult as it is, 
               is a rare opportunity: not just to compete, but to <span className="font-bold">grow</span> in discipline, 
-              confidence, and self-belief. At English Excellence, we don't just teach English. We support students 
+              confidence, and self-belief. At English Excellence, we do not just teach English. We support students 
               through one of the most demanding chapters of their lives, with clarity, structure, and genuine 
-              care—so they don't just improve their results, but emerge stronger for what comes next.
+              care—so they do not just improve their results, but emerge stronger for what comes next.
             </p>
           </div>
         </motion.div>
@@ -78,7 +78,7 @@ export function About() {
 
           <div className="mt-20 relative self-end">
             <div className="relative inline-block">
-              <div className="w-80 h-80 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl">
+              <div className="w-56 h-56 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl">
                 <img 
                   src={IMAGES.founder} 
                   alt="Leo Bui - Founder" 

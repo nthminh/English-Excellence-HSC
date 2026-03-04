@@ -4,11 +4,10 @@
  */
 export const IMAGES = {
   // Founder / About Page
-  founder: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/92.png?alt=media&token=c7e36399-8b9d-4bd2-9960-4ca52b1932cd",
+  founder: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/leofounder.png?alt=media&token=d50ac739-b642-4dac-b1c3-7b4c891ae780",
   
   // Home Page
-  hero: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/89.png?alt=media&token=bcb4996e-6e57-4d2a-9ac4-5fa35cab4a03",
-  
+  hero: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/Gemini_Generated_Image_4zkxct4zkxct4zkx.png?alt=media&token=0e80a6dc-767b-4685-837e-ff0c4ddfe3b2",
   // Placeholders for dynamic content (can be replaced with specific URLs)
   studentPlaceholder: (id: string | number) => `https://picsum.photos/seed/student${id}/100/100`,
   blogPlaceholder: (id: string | number) => `https://picsum.photos/seed/blog${id}/800/600`,

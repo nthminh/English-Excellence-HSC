@@ -4,32 +4,80 @@ import { Download, FileText, CheckCircle, ArrowRight, Loader2, BookOpen, Message
 import { db } from '../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
-const resources = [
+const detailedResources = [
   {
-    title: 'Band 6 Essay Guide',
-    type: 'Guide',
-    desc: 'The ultimate structure for any HSC English essay. Includes sentence starters and analysis templates.',
-    category: 'Guides'
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/the%20guide%20HSc.png?alt=media&token=5f51a698-5c62-4403-a331-58fe41477052",
+    bookTitle: "The Guide to HSC English",
+    mainTitle: "The Guide to HSC English",
+    description: "The ultimate guide on how to understand, practice and execute any Essay writing in the HSC.",
+    features: [
+      { icon: "BookOpen", value: "50+", label: "Pages with breakdowns, structures, and examples." },
+      { icon: "FileText", value: "", label: "" },
+      { icon: "MessageSquare", value: "", label: "" },
+      { icon: "Award", value: "", label: "Plan on how to prepare for exams" },
+    ],
+    downloadUrl: "#",
   },
   {
-    title: 'Common Module: Sample Response',
-    type: 'Essay',
-    desc: 'A full-mark response for "Texts and Human Experiences" with detailed examiner annotations.',
-    category: 'Essays'
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/guide.png?alt=media&token=ed2fe22c-29ba-496b-84ff-48220447e738",
+    bookTitle: "The Guide to Creative Writing",
+    mainTitle: "The Guide to Creative Writing",
+    description: "The guide to write imaginative, discursive and persuasive responses with examples and feedback.",
+    features: [
+      { icon: "BookOpen", value: "100+", label: "Pages" },
+      { icon: "FileText", value: "9", label: "Band 6 Example Scripts" },
+      { icon: "MessageSquare", value: "150+", label: "Feedback Comments" },
+      { icon: "Award", value: "✓", label: "Predicted marks" },
+    ],
+    downloadUrl: "#",
   },
   {
-    title: 'Module A: Comparative Analysis',
-    type: 'Marked Response',
-    desc: 'Real student work marked by a senior examiner, showing exactly what distinguishes a Band 6.',
-    category: 'Marked Responses'
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/example%20responses.png?alt=media&token=8a05fe37-e2c0-48fd-a8b7-4de63cd4fe3d",
+    bookTitle: "Common Module: Sample Responses",
+    mainTitle: "Common Module",
+    description: "Example responses on the \"Texts and Human Experiences Module\".",
+    features: [
+      { icon: "BookOpen", value: "80", label: "Pages" },
+      { icon: "FileText", value: "11+", label: "Essay Scripts" },
+      { icon: "MessageSquare", value: "200+", label: "Feedback Comments" },
+      { icon: "Award", value: "✓", label: "Variety of HSC Texts" },
+    ],
+    downloadUrl: "#",
   },
   {
-    title: 'Creative Writing Toolkit',
-    type: 'Feedback',
-    desc: 'A collection of feedback on common creative writing pitfalls and how to avoid them.',
-    category: 'Feedback'
-  }
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/modeA.png?alt=media&token=5e98e391-15d6-498e-9909-eaa276ef92ab",
+    bookTitle: "Mod A: Sample Responses",
+    mainTitle: "Mod A Samples",
+    description: "Example responses on \"Textual Conversations\" (Advanced) and \"Language, Identity and Culture\" (Standard).",
+    features: [
+      { icon: "BookOpen", value: "86", label: "Pages" },
+      { icon: "FileText", value: "12", label: "Essay Scripts" },
+      { icon: "MessageSquare", value: "200+", label: "Feedback Comments" },
+      { icon: "Award", value: "✓", label: "Covers variety of HSC text" },
+    ],
+    downloadUrl: "#",
+  },
+  {
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/booksample.png?alt=media&token=2d9eedc9-1e90-418f-ac73-5618d4b07d06",
+    bookTitle: "Example Responses: MOD B",
+    mainTitle: "MOD B Samples",
+    description: "Everything you need to excel in HSC English — written by tutors, built for students, and 100% free.",
+    features: [
+      { icon: "BookOpen", value: "300+", label: "Pages of Content" },
+      { icon: "FileText", value: "40+", label: "Example Responses" },
+      { icon: "MessageSquare", value: "600+", label: "Feedback Comments" },
+      { icon: "Award", value: "✓", label: "Mark Values Included" },
+    ],
+    downloadUrl: "#",
+  },
 ];
+
+const iconMap: { [key: string]: React.ReactNode } = {
+    BookOpen: <BookOpen size={20} />,
+    FileText: <FileText size={20} />,
+    MessageSquare: <MessageSquare size={20} />,
+    Award: <Award size={20} />,
+  };
 
 export function Resources() {
   const [signupName, setSignupName] = React.useState('');
@@ -76,110 +124,94 @@ export function Resources() {
           </p>
         </div>
 
-        {/* FREE Book Showcase Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-20 bg-navy rounded-[3rem] overflow-hidden"
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-            {/* Book Image Area */}
-            <div className="relative flex items-center justify-center p-12 bg-navy/95 min-h-[420px]" style={{ perspective: '1200px' }}>
-                <div className="absolute inset-0 bg-gold/5 rounded-l-[3rem]" />
-                <motion.div
-                    className="relative z-10 w-72 h-96"
-                    whileHover={{ rotateY: -18, x: -10 }}
-                    transition={{ duration: 0.4, ease: 'easeOut' }}
-                    style={{ transformStyle: 'preserve-3d' }}
-                >
-                    <img
-                        src="https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/booksample.png?alt=media&token=2d9eedc9-1e90-418f-ac73-5618d4b07d06"
-                        alt="Book Sample"
-                        className="absolute w-full h-full object-cover rounded-lg shadow-2xl"
-                    />
-                    {/* Book spine effect */}
-                    <div
-                        className="absolute left-0 top-0 h-full w-8 bg-gray-800"
-                        style={{
-                            transform: 'rotateY(-90deg) translateX(-16px)',
-                            transformOrigin: 'right',
-                            backfaceVisibility: 'hidden',
-                            backgroundImage: 'linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(255,255,255,0.1) 100%)',
-                        }}
-                    ></div>
-                    <div className="absolute -top-4 -right-4 bg-gold text-navy font-sans font-black text-sm px-4 py-2 rounded-full shadow-lg rotate-6 uppercase tracking-widest z-20">
-                        FREE
-                    </div>
-                </motion.div>
-            </div>
-
-            {/* Stats & Info Area */}
-            <div className="p-12 flex flex-col justify-center bg-navy">
-              <div className="mb-2">
-                <span className="text-gold font-sans font-black text-xs uppercase tracking-[0.35em]">Completely Free</span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-cream mb-3 leading-tight">
-                FREE HSC <span className="text-gold italic">Resources</span>
-              </h2>
-              <p className="text-cream/60 font-sans text-base mb-8 leading-relaxed">
-                Everything you need to excel in HSC English — written by tutors, built for students, and 100% free.
-              </p>
-
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                {[
-                  { icon: <BookOpen size={20} />, value: '300+', label: 'Pages of Content' },
-                  { icon: <FileText size={20} />, value: '40+', label: 'Example Responses' },
-                  { icon: <MessageSquare size={20} />, value: '600+', label: 'Feedback Comments' },
-                  { icon: <Award size={20} />, value: '✓', label: 'Mark Values Included' },
-                ].map((stat) => (
-                  <div key={stat.label} className="bg-cream/5 border border-cream/10 rounded-2xl p-4 flex items-start gap-3">
-                    <span className="text-gold mt-0.5">{stat.icon}</span>
-                    <div>
-                      <p className="text-cream font-sans font-black text-xl leading-none">{stat.value}</p>
-                      <p className="text-cream/50 font-sans text-xs mt-1 leading-snug">{stat.label}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex items-center gap-2 text-cream/60 font-sans text-sm">
-                <Users size={16} className="text-gold" />
-                <span>Written by <span className="text-gold font-semibold">tutors</span> for students</span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-          {resources.map((resource, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
+        <div className="space-y-20">
+          {detailedResources.map((resource, index) => (
+              <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="bg-white p-8 rounded-[2.5rem] border border-navy/5 shadow-sm hover:shadow-xl transition-all group"
-            >
-              <div className="flex items-start justify-between mb-6">
-                <div className="w-14 h-14 bg-gold/10 rounded-2xl flex items-center justify-center text-gold">
-                  <FileText size={28} />
-                </div>
-                <span className="text-xs font-bold uppercase tracking-widest text-navy/40 bg-navy/5 px-3 py-1 rounded-full">
-                  {resource.category}
-                </span>
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="bg-navy rounded-[3rem] overflow-hidden"
+              >
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                  {/* Book Image Area */}
+                  <div className="relative flex items-center justify-center p-12 bg-navy/95 min-h-[420px]" style={{ perspective: '1200px' }}>
+                      <div className="absolute inset-0 bg-gold/5 rounded-l-[3rem]" />
+                      <motion.div
+                          className="relative z-10 w-72 h-96"
+                          whileHover={{ rotateY: -18, x: -10 }}
+                          transition={{ duration: 0.4, ease: 'easeOut' }}
+                          style={{ transformStyle: 'preserve-3d' }}
+                      >
+                          <img
+                              src={resource.imageUrl}
+                              alt={resource.bookTitle}
+                              className="absolute w-full h-full object-cover rounded-lg shadow-2xl"
+                              style={index === 0 ? { transform: 'translateY(20px)' } : {}}
+                          />
+                          <div
+                              className="absolute left-0 top-0 h-full w-8 bg-gray-800"
+                              style={{
+                                  transform: 'rotateY(-90deg) translateX(-16px)',
+                                  transformOrigin: 'right',
+                                  backfaceVisibility: 'hidden',
+                                  backgroundImage: 'linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(255,255,255,0.1) 100%)',
+                              }}
+                          ></div>
+                          <div className="absolute -top-4 -right-4 bg-gold text-navy font-sans font-black text-sm px-4 py-2 rounded-full shadow-lg rotate-6 uppercase tracking-widest z-20">
+                              FREE
+                          </div>
+                      </motion.div>
+                  </div>
+
+                  {/* Stats & Info Area */}
+                  <div className="p-12 flex flex-col justify-center bg-navy">
+                  <div className="mb-2">
+                      <span className="text-gold font-sans font-black text-xs uppercase tracking-[0.35em]">Completely Free</span>
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-serif font-bold text-cream mb-3 leading-tight">
+                      <span className="text-gold italic">{resource.mainTitle}</span>
+                  </h2>
+                  <p className="text-cream/60 font-sans text-base mb-8 leading-relaxed">
+                      {resource.description}
+                  </p>
+
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-2 gap-4 mb-8">
+                      {resource.features.filter(stat => stat.label).map((stat) => (
+                      <div key={stat.label} className="bg-cream/5 border border-cream/10 rounded-2xl p-4 flex items-start gap-3">
+                          <span className="text-gold mt-0.5">{iconMap[stat.icon]}</span>
+                          <div>
+                          <p className="text-cream font-sans font-black text-xl leading-none">{stat.value}</p>
+                          <p className="text-cream/50 font-sans text-xs mt-1 leading-snug">{stat.label}</p>
+                          </div>
+                      </div>
+                      ))}
+                  </div>
+
+                  <a
+                    href={resource.downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-full bg-gold text-navy font-bold py-4 px-6 rounded-2xl hover:bg-opacity-90 transition-all group mb-8"
+                  >
+                    Download Resource
+                    <Download className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </a>
+
+                  <div className="flex items-center gap-2 text-cream/60 font-sans text-sm">
+                      <Users size={16} className="text-gold" />
+                      <span>Written by <span className="text-gold font-semibold">tutors</span> for students</span>
+                  </div>
+                  </div>
               </div>
-              <h3 className="text-2xl font-serif font-bold text-navy mb-3 group-hover:text-gold transition-colors">{resource.title}</h3>
-              <p className="text-navy/60 mb-8 leading-relaxed">{resource.desc}</p>
-              <button className="flex items-center text-navy font-bold group-hover:text-gold transition-colors">
-                Download Resource <Download className="ml-2" size={18} />
-              </button>
-            </motion.div>
+              </motion.div>
           ))}
         </div>
 
+
         {/* Sign up form for resources */}
-        <div className="bg-navy rounded-[3rem] p-12 md:p-20 relative overflow-hidden">
+        <div className="bg-navy rounded-[3rem] p-12 md:p-20 relative overflow-hidden mt-20">
           <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>

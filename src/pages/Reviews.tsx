@@ -1,9 +1,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Star, Quote, ArrowRight, UserCheck } from 'lucide-react';
+import { Star, Quote, ArrowRight, UserCheck, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../components/Logo';
-import { IMAGES } from '../constants/images';
 
 const reviews = [
   {
@@ -11,28 +10,24 @@ const reviews = [
     school: 'Previous Student',
     result: 'Band 6',
     quote: 'Guys if your looking for a tutor that will actually teach you how to write a essay or anything not just some useless activities this is your guy I graduated this year and he\'s been tutoring me since the end of my year 10 class and I went from failing to slowly building up my marks and actually enjoying English and knowing how to write I can go on and on about how good he is but you should try for yourself you wouldn\'t regret it he\'s not just a tutor but honestly a great person for life advises and truely makes sure you put your all in your work',
-    image: IMAGES.reviewPlaceholder('jasmine')
   },
   {
     name: 'F',
     school: 'Parent',
     result: 'Improved Grades',
     quote: 'Super happy the result of my son\'s grades after being tutored by Leo in just a year. Would recommend him as he not only keeps my kid accountable but also keeps me as the parent with clear communication and care. Thank you!',
-    image: IMAGES.reviewPlaceholder('f')
   },
   {
     name: 'Nina Hermez',
     school: 'Previous Student',
     result: 'Band 6',
     quote: 'Leo is an excellent English tutor who provides amazing constructive and detailed feedback! Leo has helped me push my essay from a band 5 to a band 6 with the feedback he provided. I wish you all the best!',
-    image: IMAGES.reviewPlaceholder('nina')
   },
   {
     name: 'Matthew Marshall',
     school: 'Previous Student',
     result: 'Improved Marks',
     quote: 'The resources I\'ve received from here are just phenomenal. They are really well set out and easy to follow and understand, making it perfect for learning how to improve your own. I would and will represent English Excellence to any student looking to improve their marks or ensure that they maximise their marks. Leo is very helpful and amazing to work with. He helped me out a lot and I am very grateful for his assistance.',
-    image: IMAGES.reviewPlaceholder('matthew')
   }
 ];
 
@@ -59,8 +54,8 @@ export function Reviews() {
             >
               <Quote className="absolute top-10 right-10 text-gold/10 group-hover:text-gold/20 transition-colors" size={80} />
               <div className="flex items-center space-x-4 mb-8">
-                <div className="w-16 h-16 rounded-full border-2 border-gold/20 overflow-hidden">
-                  <img src={review.image} alt={review.name} referrerPolicy="no-referrer" />
+                <div className="w-16 h-16 rounded-full border-2 border-gold/20 overflow-hidden flex items-center justify-center bg-gold/10">
+                  <User className="text-gold" size={32} />
                 </div>
                 <div>
                   <h3 className="text-xl font-serif font-bold text-navy">{review.name}</h3>
