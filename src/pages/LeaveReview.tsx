@@ -3,9 +3,6 @@ import { motion } from 'motion/react';
 import { Star, Upload, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import { db } from '../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import emailjs from '@emailjs/browser';
-
-const ADMIN_EMAIL = 'leo@eehsc.com';
 
 export function LeaveReview() {
   const [submitted, setSubmitted] = React.useState(false);
@@ -24,23 +21,6 @@ export function LeaveReview() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const sendAdminNotification = async (data: typeof formData, stars: number) => {
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.VITE_EMAILJS_REVIEW_ADMIN_TEMPLATE_ID;
-
-    if (!publicKey || !serviceId || !templateId) return;
-
-    await emailjs.send(serviceId, templateId, {
-      to_email: ADMIN_EMAIL,
-      reviewer_name: data.name,
-      school: data.school,
-      result: data.result || 'Not provided',
-      rating: stars,
-      testimonial: data.testimonial,
-    }, publicKey);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -57,12 +37,6 @@ export function LeaveReview() {
       } else {
         console.warn('Firebase not configured. Submission simulated.');
         await new Promise(resolve => setTimeout(resolve, 1000));
-      }
-
-      try {
-        await sendAdminNotification(formData, rating);
-      } catch (emailErr) {
-        console.warn('Admin email notification failed:', emailErr);
       }
 
       setSubmitted(true);

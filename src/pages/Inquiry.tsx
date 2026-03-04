@@ -4,22 +4,6 @@ import { CheckCircle2, Loader2 } from 'lucide-react';
 import { IMAGES } from '../constants/images';
 import { db } from '../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import emailjs from '@emailjs/browser';
-
-const ADMIN_EMAIL = 'leo@eehsc.com';
-
-const INQUIRY_CONFIRMATION_MESSAGE = `Hi there,
-
-Thank you for reaching out to English Excellence.
-
-We've received your enquiry regarding a trial class. A member of our team will be in touch shortly using the phone number you provided to organise a suitable time and discuss the next steps.
-
-During this call, we'll also take a moment to understand the student's current level, upcoming assessments, and goals to ensure the trial lesson is as useful and personalised as possible. If there are any concerns between now and then, don't be afraid to contact us. (0431878221)
-
-We look forward to speaking with you soon.
-
-Kind regards,
-English Excellence`;
 
 const SchoolLogos = () => {
   return (
@@ -63,39 +47,6 @@ export function Inquiry() {
     }
   };
 
-  const sendEmails = async (data: typeof formData) => {
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const adminTemplateId = import.meta.env.VITE_EMAILJS_INQUIRY_ADMIN_TEMPLATE_ID;
-    const userTemplateId = import.meta.env.VITE_EMAILJS_INQUIRY_USER_TEMPLATE_ID;
-
-    if (!publicKey || !serviceId) return;
-
-    const englishLevels = data.englishLevel.join(', ') || 'Not specified';
-
-    // Notify admin
-    if (adminTemplateId) {
-      await emailjs.send(serviceId, adminTemplateId, {
-        to_email: ADMIN_EMAIL,
-        parent_name: `${data.parentFirstName} ${data.parentLastName}`.trim(),
-        child_name: `${data.childFirstName} ${data.childLastName}`.trim(),
-        phone: data.phone,
-        email: data.email,
-        year_level: data.yearLevel,
-        english_level: englishLevels,
-      }, publicKey);
-    }
-
-    // Send confirmation to user
-    if (userTemplateId && data.email) {
-      await emailjs.send(serviceId, userTemplateId, {
-        to_email: data.email,
-        parent_name: data.parentFirstName,
-        message: INQUIRY_CONFIRMATION_MESSAGE,
-      }, publicKey);
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -111,12 +62,6 @@ export function Inquiry() {
       } else {
         console.warn('Firebase not configured. Submission simulated.');
         await new Promise(resolve => setTimeout(resolve, 1000));
-      }
-
-      try {
-        await sendEmails(formData);
-      } catch (emailErr) {
-        console.warn('Email notification failed:', emailErr);
       }
 
       setSubmitted(true);
