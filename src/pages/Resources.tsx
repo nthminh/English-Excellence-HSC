@@ -16,7 +16,7 @@ const detailedResources = [
       { icon: "MessageSquare", value: "", label: "" },
       { icon: "Award", value: "", label: "Plan on how to prepare for exams" },
     ],
-    downloadUrl: "#",
+    downloadUrl: "https://tally.so/r/woaKYX",
   },
   {
     imageUrl: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/guide.png?alt=media&token=ed2fe22c-29ba-496b-84ff-48220447e738",
@@ -29,7 +29,7 @@ const detailedResources = [
       { icon: "MessageSquare", value: "150+", label: "Feedback Comments" },
       { icon: "Award", value: "✓", label: "Predicted marks" },
     ],
-    downloadUrl: "#",
+    downloadUrl: "https://tally.so/r/VL5xjv",
   },
   {
     imageUrl: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/example%20responses.png?alt=media&token=8a05fe37-e2c0-48fd-a8b7-4de63cd4fe3d",
@@ -42,7 +42,7 @@ const detailedResources = [
       { icon: "MessageSquare", value: "200+", label: "Feedback Comments" },
       { icon: "Award", value: "✓", label: "Variety of HSC Texts" },
     ],
-    downloadUrl: "#",
+    downloadUrl: "https://tally.so/r/n0Ndg6",
   },
   {
     imageUrl: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/modeA.png?alt=media&token=5e98e391-15d6-498e-9909-eaa276ef92ab",
@@ -55,7 +55,7 @@ const detailedResources = [
       { icon: "MessageSquare", value: "200+", label: "Feedback Comments" },
       { icon: "Award", value: "✓", label: "Covers variety of HSC text" },
     ],
-    downloadUrl: "#",
+    downloadUrl: "https://tally.so/r/LZWoz1",
   },
   {
     imageUrl: "https://firebasestorage.googleapis.com/v0/b/english-excellence-1bc2a.firebasestorage.app/o/booksample.png?alt=media&token=2d9eedc9-1e90-418f-ac73-5618d4b07d06",
@@ -68,7 +68,7 @@ const detailedResources = [
       { icon: "MessageSquare", value: "600+", label: "Feedback Comments" },
       { icon: "Award", value: "✓", label: "Mark Values Included" },
     ],
-    downloadUrl: "#",
+    downloadUrl: "https://tally.so/r/yP97N4",
   },
 ];
 
