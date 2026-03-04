@@ -18,7 +18,7 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-cream/60 text-sm leading-relaxed mb-6">
-              Premium 1-on-1 HSC English tutoring that guarantees improvement. We focus on personalized strategies to help students excel in their final years.
+              Premium 1-on-1 HSC English tutoring that guarantees improvement. We focus on personalised strategies to help students excel in their final years.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-cream/60 hover:text-gold transition-colors"><Facebook size={20} /></a>

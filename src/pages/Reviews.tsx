@@ -83,7 +83,7 @@ export function Reviews() {
           </div>
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-navy mb-8 relative z-10">Are you a past student?</h2>
           <p className="text-navy/70 text-xl font-medium mb-12 max-w-2xl mx-auto">
-            We\'d love to hear about your success! Share your story and help inspire the next generation of HSC students.
+            We would love to hear about your success! Share your story and help inspire the next generation of HSC students.
           </p>
           <Link
             to="/leave-review"
