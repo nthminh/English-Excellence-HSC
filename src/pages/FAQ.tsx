@@ -82,7 +82,7 @@ export function FAQ() {
             We're here to help. Reach out to us directly and we'll get back to you as soon as possible.
           </p>
           <a
-            href="mailto:contact@englishexcellence.com.au"
+            href="mailto:Admin@eehsc.com"
             className="bg-gold text-navy px-8 py-4 rounded-full font-bold hover:bg-opacity-90 transition-all inline-block"
           >
             Contact Support
