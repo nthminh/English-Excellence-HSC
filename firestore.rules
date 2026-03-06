@@ -8,7 +8,9 @@ service cloud.firestore {
       allow read, update, delete: if false;
     }
 
-    // Review submissions: anyone can create and read, no updates or deletes
+    // Review submissions: anyone can create and read, no client-side updates or deletes.
+    // Status updates (approve / reject) are performed server-side by the
+    // `reviewAction` Cloud Function using the Admin SDK, which bypasses these rules.
     match /reviews/{docId} {
       allow create: if true;
       allow read: if true;
