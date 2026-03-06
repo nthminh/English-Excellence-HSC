@@ -14,9 +14,9 @@ admin.initializeApp();
  * Build a Nodemailer transporter from environment variables.
  *
  * Set these via Firebase Functions environment config:
- *   firebase functions:config:set \
- *     email.host="smtp.gmail.com" email.port="587" \
- *     email.user="you@gmail.com"  email.pass="your-app-password" \
+ *   firebase functions:config:set \\
+ *     email.host="smtp.gmail.com" email.port="587" \\
+ *     email.user="you@gmail.com"  email.pass="your-app-password" \\
  *     email.from="you@gmail.com"
  *
  * At runtime, firebase-functions v2 exposes them as process.env
@@ -39,7 +39,7 @@ function getFrom(): string {
   return process.env.EMAIL_FROM ?? process.env.EMAIL_USER ?? ADMIN_EMAIL;
 }
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "leo@eehsc.com";
+const ADMIN_EMAIL = "leo@eehsc.com";
 
 /**
  * Base URL for Cloud Functions used when building approve/reject links.
@@ -55,16 +55,6 @@ function getFunctionsBaseUrl(): string {
     process.env.FUNCTIONS_BASE_URL ??
     "https://asia-southeast1-english-excellence-hsc.cloudfunctions.net"
   );
-}
-
-/** Escape HTML special characters to prevent malformed email HTML bodies. */
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
 }
 
 /** Render a minimal HTML confirmation page for the reviewAction endpoint. */
@@ -98,18 +88,16 @@ function buildActionHtml(title: string, message: string): string {
 </html>`;
 }
 
-const INQUIRY_CONFIRMATION_MESSAGE = `Hi there,
+const INQUIRY_CONFIRMATION_MESSAGE = `Thank you for reaching out to English Excellence.
 
-Thank you for reaching out to English Excellence.
-
-We\'ve received your enquiry regarding a trial class. A member of our team \
-will be in touch shortly using the phone number you provided to organise a \
+We\'\'\'ve received your enquiry regarding a trial class. A member of our team \\
+will be in touch shortly using the phone number you provided to organise a \\
 suitable time and discuss the next steps.
 
-During this call, we\'ll also take a moment to understand the student\'s current \
-level, upcoming assessments, and goals to ensure the trial lesson is as useful \
-and personalised as possible. If there are any concerns between now and then, \
-don\'t be afraid to contact us. (0431878221)
+During this call, we\'\'\'ll also take a moment to understand the student\'\'\'s current \\
+level, upcoming assessments, and goals to ensure the trial lesson is as useful \\
+and personalised as possible. If there are any concerns between now and then, \\
+don\'\'\'t be afraid to contact us. (0431878221)
 
 We look forward to speaking with you soon.
 
@@ -118,7 +106,7 @@ English Excellence`;
 
 const STAY_IN_TOUCH_WELCOME_MESSAGE = `Hi there,
 
-Welcome to English Excellence! We\'re thrilled to have you join our community.
+Welcome to English Excellence! We\'\'\'re thrilled to have you join our community.
 
 As a subscriber, we will keep you up to date with:
 - The latest course information and new programmes
@@ -128,7 +116,7 @@ As a subscriber, we will keep you up to date with:
 
 Stay tuned — exciting updates are on their way!
 
-If you have any questions, feel free to reach out at ${ADMIN_EMAIL} \
+If you have any questions, feel free to reach out at ${ADMIN_EMAIL} \\
 or call us at 0431 878 221.
 
 Warm regards,
@@ -140,13 +128,13 @@ ${ADMIN_EMAIL}`;
 // ---------------------------------------------------------------------------
 
 /**
- * Fires when a document is created in the `inquiries` collection.
+ * Fires when a document is created in the \`inquiries\` collection.
  * Sends:
  *   1. A notification email to the admin with the full inquiry details.
  *   2. A confirmation email to the user.
  */
 export const onInquiryCreated = onDocumentCreated(
-  { document: "inquiries/{inquiryId}", region: "asia-southeast1" },
+  "inquiries/{inquiryId}",
   async (event) => {
     const data = event.data?.data();
     if (!data) return;
@@ -177,9 +165,9 @@ export const onInquiryCreated = onDocumentCreated(
         `Email:          ${data.email ?? ""}`,
         `Year Level:     ${data.yearLevel ?? ""}`,
         `English Level:  ${englishLevel}`,
-      ].join("\n"),
+      ].join("\\n"),
     }).catch((err: unknown) => {
-      console.error("[onInquiryCreated] Failed to send admin notification email:", err);
+      console.error("[onInquiryCreated] Failed to send admin notification:", err);
     });
 
     // 2. Send confirmation to the user
@@ -201,13 +189,13 @@ export const onInquiryCreated = onDocumentCreated(
 // ---------------------------------------------------------------------------
 
 /**
- * Fires when a document is created in the `reviews` collection.
+ * Fires when a document is created in the \`reviews\` collection.
  * - Generates a one-time approval token and stores it on the document.
  * - Sends a notification email to the admin with approve / reject links so
  *   the review can be actioned immediately without logging into Firebase.
  */
 export const onReviewCreated = onDocumentCreated(
-  { document: "reviews/{reviewId}", region: "asia-southeast1" },
+  "reviews/{reviewId}",
   async (event) => {
     const data = event.data?.data();
     if (!data) return;
@@ -255,16 +243,16 @@ export const onReviewCreated = onDocumentCreated(
         rejectUrl,
         ``,
         `These links are single-use and do not require you to log in.`,
-      ].join("\n"),
+      ].join("\\n"),
       html: [
         `<p>A new review has been submitted and is pending approval:</p>`,
         `<table style="border-collapse:collapse;font-family:sans-serif;">`,
-        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name</td><td>${escapeHtml(String(data.name ?? ""))}</td></tr>`,
-        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">School</td><td>${escapeHtml(String(data.school ?? ""))}</td></tr>`,
-        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">HSC Result</td><td>${escapeHtml(String(data.result ?? "Not provided"))}</td></tr>`,
-        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Rating</td><td>${escapeHtml(String(data.rating ?? ""))}/5</td></tr>`,
+        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name</td><td>${data.name ?? ""}</td></tr>`,
+        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">School</td><td>${data.school ?? ""}</td></tr>`,
+        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">HSC Result</td><td>${data.result ?? "Not provided"}</td></tr>`,
+        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Rating</td><td>${data.rating ?? ""}/5</td></tr>`,
         `</table>`,
-        `<p><strong>Testimonial:</strong><br/>${escapeHtml(String(data.testimonial ?? "")).replace(/\n/g, "<br/>")}</p>`,
+        `<p><strong>Testimonial:</strong><br/>${(data.testimonial ?? "").replace(/\\n/g, "<br/>")}</p>`,
         `<hr/>`,
         `<p>`,
         `  <a href="${approveUrl}" style="display:inline-block;padding:12px 24px;background:#c9a84c;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;margin-right:12px;">`,
@@ -274,10 +262,8 @@ export const onReviewCreated = onDocumentCreated(
         `    ❌ Reject Review`,
         `  </a>`,
         `</p>`,
-        `<p style="font-size:0.8em;color:#888;">These links are single-use and do not require you to log in to Firebase.</p>`
-      ].join("\n"),
-    }).catch((err: unknown) => {
-      console.error("[onReviewCreated] Failed to send admin notification email:", err);
+        `<p style="font-size:0.8em;color:#888;">These links are single-use and do not require you to log in to Firebase.</p>`,
+      ].join("\\n"),
     });
   }
 );
@@ -297,9 +283,7 @@ export const onReviewCreated = onDocumentCreated(
  * The link is included in the admin notification email sent by
  * onReviewCreated.  No Firebase login is required.
  */
-export const reviewAction = onRequest(
-  { region: "asia-southeast1" },
-  async (req, res) => {
+export const reviewAction = onRequest(async (req, res) => {
   const { reviewId, action, token } = req.query as Record<string, string>;
 
   if (!reviewId || !action || !token) {
@@ -382,7 +366,7 @@ export const reviewAction = onRequest(
     return;
   }
 
-  // Idempotency guard – don't re-process an already actioned review.
+  // Idempotency guard – don\'t re-process an already actioned review.
   if (
     reviewData.status === "approved" ||
     reviewData.status === "rejected"
@@ -428,11 +412,11 @@ export const reviewAction = onRequest(
 // ---------------------------------------------------------------------------
 
 /**
- * Fires when a document is created in the `resource_signups` collection.
+ * Fires when a document is created in the \`resource_signups\` collection.
  * Sends a welcome email to the subscriber.
  */
 export const onResourceSignupCreated = onDocumentCreated(
-  { document: "resource_signups/{signupId}", region: "asia-southeast1" },
+  "resource_signups/{signupId}",
   async (event) => {
     const data = event.data?.data();
     if (!data) return;
