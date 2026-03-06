@@ -117,14 +117,9 @@ function buildActionHtml(title: string, message: string): string {
 
 const INQUIRY_CONFIRMATION_MESSAGE = `Thank you for reaching out to English Excellence.
 
-We've received your enquiry regarding a trial class. A member of our team 
-will be in touch shortly using the phone number you provided to organise a 
-suitable time and discuss the next steps.
+We've received your enquiry regarding a trial class. A member of our team will be in touch shortly using the phone number you provided to organise a suitable time and discuss the next steps.
 
-During this call, we'll also take a moment to understand the student's current 
-level, upcoming assessments, and goals to ensure the trial lesson is as useful 
-and personalised as possible. If there are any concerns between now and then, 
-don't be afraid to contact us. (0431878221)
+During this call, we'll also take a moment to understand the student's current level, upcoming assessments, and goals to ensure the trial lesson is as useful and personalised as possible. If there are any concerns between now and then, don't be afraid to contact us. (0431878221)
 
 We look forward to speaking with you soon.
 
@@ -143,8 +138,7 @@ As a subscriber, we will keep you up to date with:
 
 Stay tuned - exciting updates are on their way!
 
-If you have any questions, feel free to reach out at ${ADMIN_EMAIL} 
-or call us at 0431 878 221.
+If you have any questions, feel free to reach out at ${ADMIN_EMAIL} or call us at 0431 878 221.
 
 Warm regards,
 English Excellence
@@ -285,26 +279,23 @@ REJECT this review (click to discard):
 ${rejectUrl}
 
 These links are single-use and do not require you to log in.`,
-      html: [
-        `<p>A new review has been submitted and is pending approval:</p>`,
-        `<table style="border-collapse:collapse;font-family:sans-serif;">`,
-        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name</td><td>${data.name ?? ""}</td></tr>`,
-        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">School</td><td>${data.school ?? ""}</td></tr>`,
-        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">HSC Result</td><td>${data.result ?? "Not provided"}</td></tr>`,
-        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Rating</td><td>${data.rating ?? ""}/5</td></tr>`,
-        `</table>`,
-        `<p><strong>Testimonial:</strong><br/>${(data.testimonial ?? "").replace(/\n/g, "<br/>")}</p>`,
-        `<hr/>`,
-        `<p>`,
-        `  <a href="${approveUrl}" style="display:inline-block;padding:12px 24px;background:#c9a84c;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;margin-right:12px;">`,
-        `    ✅ Approve Review`,
-        `  </a>`,
-        `  <a href="${rejectUrl}" style="display:inline-block;padding:12px 24px;background:#c0392b;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;">`,
-        `    ❌ Reject Review`,
-        `  </a>`,
-        `</p>`,
-        `<p style="font-size:0.8em;color:#888;">These links are single-use and do not require you to log in to Firebase.</p>`,
-      ].join("\n"),
+      html: buildEmailHtml(`
+        <h2 style="margin-top:0;color:#1a2240;">New Review Submitted</h2>
+        <table cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;width:120px;">Name</td><td>${data.name ?? ""}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">School</td><td>${data.school ?? ""}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">HSC Result</td><td>${data.result ?? "Not provided"}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Rating</td><td>${data.rating ?? ""}/5</td></tr>
+        </table>
+        <p style="margin:16px 0 8px 0;"><strong>Testimonial:</strong></p>
+        <p style="margin:0 0 24px 0;padding:12px 16px;background:#f8f5f0;border-left:4px solid #c9a84c;border-radius:4px;">${(data.testimonial ?? "").replace(/\n/g, "<br/>")}</p>
+        <hr style="border:none;border-top:1px solid #e5e0d8;margin:24px 0;"/>
+        <p style="margin:0 0 16px 0;">
+          <a href="${approveUrl}" style="display:inline-block;padding:12px 24px;background:#c9a84c;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;margin-right:12px;">Approve Review</a>
+          <a href="${rejectUrl}" style="display:inline-block;padding:12px 24px;background:#c0392b;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;">Reject Review</a>
+        </p>
+        <p style="margin:0;font-size:12px;color:#999;">These links are single-use and do not require you to log in to Firebase.</p>
+      `),
     });
   }
 );
