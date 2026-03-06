@@ -41,6 +41,49 @@ function getFrom(): string {
 
 const ADMIN_EMAIL = "leo@eehsc.com";
 
+/**
+ * Wrap body HTML content in a simple, widely-compatible email template.
+ * Uses inline styles for maximum email client compatibility.
+ */
+function buildEmailHtml(bodyHtml: string): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Excellence</title>
+</head>
+<body style="margin:0;padding:0;background:#f8f5f0;font-family:Arial,Helvetica,sans-serif;color:#1a2240;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f8f5f0;padding:32px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" border="0"
+               style="background:#ffffff;border-radius:12px;padding:40px 48px;max-width:600px;width:100%;">
+          <tr>
+            <td style="padding-bottom:24px;border-bottom:2px solid #c9a84c;">
+              <p style="margin:0;font-size:18px;font-weight:bold;color:#c9a84c;letter-spacing:2px;text-transform:uppercase;">
+                English Excellence
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-top:24px;font-size:15px;line-height:1.7;color:#1a2240;">
+              ${bodyHtml}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-top:32px;border-top:1px solid #e5e0d8;font-size:12px;color:#999;text-align:center;">
+              English Excellence &nbsp;|&nbsp; 0431 878 221 &nbsp;|&nbsp; ${ADMIN_EMAIL}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
 /** Render a minimal HTML confirmation page for the reviewAction endpoint. */
 function buildActionHtml(title: string, message: string): string {
   return `<!DOCTYPE html>
@@ -98,7 +141,7 @@ As a subscriber, we will keep you up to date with:
 - Free resources, study guides, and HSC English tips
 - Important updates to help you excel in your HSC journey
 
-Stay tuned — exciting updates are on their way!
+Stay tuned - exciting updates are on their way!
 
 If you have any questions, feel free to reach out at ${ADMIN_EMAIL} 
 or call us at 0431 878 221.
@@ -141,7 +184,7 @@ export const onInquiryCreated = onDocumentCreated(
     await transporter.sendMail({
       from,
       to: ADMIN_EMAIL,
-      subject: `New Trial Inquiry – ${parentName}`,
+      subject: `New Trial Inquiry - ${parentName}`,
       text: `New inquiry received:
 
 Parent Name:    ${parentName}
@@ -150,17 +193,33 @@ Phone:          ${data.phone ?? ""}
 Email:          ${data.email ?? ""}
 Year Level:     ${data.yearLevel ?? ""}
 English Level:  ${englishLevel}`,
+      html: buildEmailHtml(`
+        <h2 style="margin-top:0;color:#1a2240;">New Trial Inquiry</h2>
+        <table cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;width:140px;">Parent Name</td><td>${parentName}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Child Name</td><td>${childName}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Phone</td><td>${data.phone ?? ""}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Email</td><td>${data.email ?? ""}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Year Level</td><td>${data.yearLevel ?? ""}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">English Level</td><td>${englishLevel}</td></tr>
+        </table>
+      `),
     }).catch((err: unknown) => {
       console.error("[onInquiryCreated] Failed to send admin notification:", err);
     });
 
     // 2. Send confirmation to the user
     if (data.email) {
+      const confirmationBodyHtml = INQUIRY_CONFIRMATION_MESSAGE
+        .split("\n\n")
+        .map((para) => `<p style="margin:0 0 16px 0;">${para.replace(/\n/g, "<br/>")}</p>`)
+        .join("");
       await transporter.sendMail({
         from,
         to: data.email as string,
-        subject: "English Excellence – Trial Booking Received",
+        subject: "English Excellence - Trial Booking Received",
         text: `Hi ${data.parentFirstName ?? "there"},\n\n${INQUIRY_CONFIRMATION_MESSAGE}`,
+        html: buildEmailHtml(`<p style="margin:0 0 16px 0;">Hi ${data.parentFirstName ?? "there"},</p>${confirmationBodyHtml}`),
       }).catch((err: unknown) => {
         console.error("[onInquiryCreated] Failed to send user confirmation email:", err);
       });
@@ -206,7 +265,7 @@ export const onReviewCreated = onDocumentCreated(
     await transporter.sendMail({
       from,
       to: ADMIN_EMAIL,
-      subject: `New Review Submitted – ${data.name ?? "Anonymous"} (${data.rating ?? "?"}/5)`,
+      subject: `New Review Submitted - ${data.name ?? "Anonymous"} (${data.rating ?? "?"}/5)`,
       text: `A new review has been submitted and is pending approval:
 
 Name:        ${data.name ?? ""}
@@ -217,12 +276,12 @@ Rating:      ${data.rating ?? ""}/5
 Testimonial:
 ${data.testimonial ?? ""}
 
-──────────────────────────────────────
+--------------------------------------
 
-✅ APPROVE this review (click to publish):
+APPROVE this review (click to publish):
 ${approveUrl}
 
-❌ REJECT this review (click to discard):
+REJECT this review (click to discard):
 ${rejectUrl}
 
 These links are single-use and do not require you to log in.`,
@@ -407,11 +466,29 @@ export const onResourceSignupCreated = onDocumentCreated(
     const from = getFrom();
 
     if (data.email) {
+      const welcomeBodyHtml = `
+        <p style="margin:0 0 16px 0;">Hi ${data.name ?? "there"},</p>
+        <p style="margin:0 0 16px 0;">Welcome to English Excellence! We're thrilled to have you join our community.</p>
+        <p style="margin:0 0 8px 0;">As a subscriber, we will keep you up to date with:</p>
+        <ul style="margin:0 0 16px 0;padding-left:20px;">
+          <li style="margin-bottom:6px;">The latest course information and new programmes</li>
+          <li style="margin-bottom:6px;">Exclusive promotions and special offers</li>
+          <li style="margin-bottom:6px;">Free resources, study guides, and HSC English tips</li>
+          <li style="margin-bottom:6px;">Important updates to help you excel in your HSC journey</li>
+        </ul>
+        <p style="margin:0 0 16px 0;">Stay tuned - exciting updates are on their way!</p>
+        <p style="margin:0 0 16px 0;">If you have any questions, feel free to reach out at
+          <a href="mailto:${ADMIN_EMAIL}" style="color:#c9a84c;">${ADMIN_EMAIL}</a>
+          or call us at 0431 878 221.
+        </p>
+        <p style="margin:0;">Warm regards,<br/><strong>English Excellence</strong></p>
+      `;
       await transporter.sendMail({
         from,
         to: data.email as string,
         subject: "Welcome to English Excellence!",
         text: `Hi ${data.name ?? "there"},\n\n${STAY_IN_TOUCH_WELCOME_MESSAGE}`,
+        html: buildEmailHtml(welcomeBodyHtml),
       }).catch((err: unknown) => {
         console.error("[onResourceSignupCreated] Failed to send welcome email:", err);
       });
