@@ -41,22 +41,6 @@ function getFrom(): string {
 
 const ADMIN_EMAIL = "leo@eehsc.com";
 
-/**
- * Base URL for Cloud Functions used when building approve/reject links.
- * Set the FUNCTIONS_BASE_URL environment variable in Firebase Functions
- * config to override the default (e.g. if the project ID differs).
- *
- *   firebase functions:secrets:set FUNCTIONS_BASE_URL
- *   or
- *   firebase functions:config:set email.functions_base_url="https://..."
- */
-function getFunctionsBaseUrl(): string {
-  return (
-    process.env.FUNCTIONS_BASE_URL ??
-    "https://us-central1-english-excellence-1bc2a.cloudfunctions.net"
-  );
-}
-
 /** Render a minimal HTML confirmation page for the reviewAction endpoint. */
 function buildActionHtml(title: string, message: string): string {
   return `<!DOCTYPE html>
@@ -217,9 +201,9 @@ export const onReviewCreated = onDocumentCreated(
     const transporter = createTransporter();
     const from = getFrom();
 
-    const baseUrl = getFunctionsBaseUrl();
-    const approveUrl = `${baseUrl}/reviewAction?reviewId=${encodeURIComponent(reviewId)}&action=approve&token=${approvalToken}`;
-    const rejectUrl = `${baseUrl}/reviewAction?reviewId=${encodeURIComponent(reviewId)}&action=reject&token=${approvalToken}`;
+    const reviewActionUrl = "https://reviewaction-nwzu36hcra-uc.a.run.app";
+    const approveUrl = `${reviewActionUrl}?reviewId=${encodeURIComponent(reviewId)}&action=approve&token=${approvalToken}`;
+    const rejectUrl = `${reviewActionUrl}?reviewId=${encodeURIComponent(reviewId)}&action=reject&token=${approvalToken}`;
 
     await transporter.sendMail({
       from,
