@@ -35,11 +35,22 @@ function createTransporter() {
   });
 }
 
+const ADMIN_EMAIL = "leo@eehsc.com";
+const CONTACT_PHONE = "0431 878 221";
+
 function getFrom(): string {
   return process.env.EMAIL_FROM ?? process.env.EMAIL_USER ?? ADMIN_EMAIL;
 }
 
-const ADMIN_EMAIL = "leo@eehsc.com";
+/** Escape special HTML characters to prevent XSS and display issues. */
+function escapeHtml(value: unknown): string {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
 /**
  * Wrap body HTML content in a simple, widely-compatible email template.
@@ -73,7 +84,7 @@ function buildEmailHtml(bodyHtml: string): string {
           </tr>
           <tr>
             <td style="padding-top:32px;border-top:1px solid #e5e0d8;font-size:12px;color:#999;text-align:center;">
-              English Excellence &nbsp;|&nbsp; 0431 878 221 &nbsp;|&nbsp; ${ADMIN_EMAIL}
+              English Excellence &nbsp;|&nbsp; ${CONTACT_PHONE} &nbsp;|&nbsp; ${ADMIN_EMAIL}
             </td>
           </tr>
         </table>
@@ -125,7 +136,7 @@ As a subscriber, we will keep you up to date with:
 
 Stay tuned - exciting updates are on their way!
 
-If you have any questions, feel free to reach out at ${ADMIN_EMAIL} or call us at 0431 878 221.
+If you have any questions, feel free to reach out at ${ADMIN_EMAIL} or call us at ${CONTACT_PHONE}.
 
 Warm regards,
 English Excellence
@@ -176,12 +187,12 @@ English Level:  ${englishLevel}`,
       html: buildEmailHtml(`
         <h2 style="margin-top:0;color:#1a2240;">New Trial Inquiry</h2>
         <table cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
-          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;width:140px;">Parent Name</td><td>${parentName}</td></tr>
-          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Child Name</td><td>${childName}</td></tr>
-          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Phone</td><td>${data.phone ?? ""}</td></tr>
-          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Email</td><td>${data.email ?? ""}</td></tr>
-          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Year Level</td><td>${data.yearLevel ?? ""}</td></tr>
-          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">English Level</td><td>${englishLevel}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;width:140px;">Parent Name</td><td>${escapeHtml(parentName)}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Child Name</td><td>${escapeHtml(childName)}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Phone</td><td>${escapeHtml(data.phone)}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Email</td><td>${escapeHtml(data.email)}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Year Level</td><td>${escapeHtml(data.yearLevel)}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">English Level</td><td>${escapeHtml(englishLevel)}</td></tr>
         </table>
       `),
     }).catch((err: unknown) => {
@@ -193,15 +204,15 @@ English Level:  ${englishLevel}`,
       const confirmationBodyHtml = `
 <p style="margin:0 0 16px 0;">Thank you for reaching out to English Excellence.</p>
 <p style="margin:0 0 16px 0;">We’ve received your enquiry regarding a trial class. A member of our team will be in touch shortly using the phone number you provided to organise a suitable time and discuss the next steps.</p>
-<p style="margin:0 0 16px 0;">During this call, we’ll also take a moment to understand the student’s current level, upcoming assessments, and goals to ensure the trial lesson is as useful and personalised as possible. If there are any concerns between now and then, don’t be afraid to contact us. (0431878221)</p>
+<p style="margin:0 0 16px 0;">During this call, we’ll also take a moment to understand the student’s current level, upcoming assessments, and goals to ensure the trial lesson is as useful and personalised as possible. If there are any concerns between now and then, don’t hesitate to contact us at <a href="tel:${CONTACT_PHONE.replace(/ /g, '')}" style="color:#c9a84c;">${CONTACT_PHONE}</a>.</p>
 <p style="margin:0 0 16px 0;">We look forward to speaking with you soon.</p>
-<p style="margin:0 0 16px 0;">Kind regards,<br/>English Excellence</p>
+<p style="margin:0 0 16px 0;">Kind regards,<br/><strong>English Excellence</strong></p>
 `;
       const confirmationText = `Thank you for reaching out to English Excellence.
 
 We’ve received your enquiry regarding a trial class. A member of our team will be in touch shortly using the phone number you provided to organise a suitable time and discuss the next steps.
 
-During this call, we’ll also take a moment to understand the student’s current level, upcoming assessments, and goals to ensure the trial lesson is as useful and personalised as possible. If there are any concerns between now and then, don’t be afraid to contact us. (0431878221)
+During this call, we’ll also take a moment to understand the student’s current level, upcoming assessments, and goals to ensure the trial lesson is as useful and personalised as possible. If there are any concerns between now and then, don’t hesitate to contact us at ${CONTACT_PHONE}.
 
 We look forward to speaking with you soon.
 
@@ -213,7 +224,7 @@ English Excellence`;
         to: data.email as string,
         subject: "English Excellence - Trial Booking Received",
         text: `Hi ${data.parentFirstName ?? "there"},\n\n${confirmationText}`,
-        html: buildEmailHtml(`<p style="margin:0 0 16px 0;">Hi ${data.parentFirstName ?? "there"},</p>${confirmationBodyHtml}`),
+        html: buildEmailHtml(`<p style="margin:0 0 16px 0;">Hi ${escapeHtml(data.parentFirstName) || "there"},</p>${confirmationBodyHtml}`),
       }).catch((err: unknown) => {
         console.error("[onInquiryCreated] Failed to send user confirmation email:", err);
       });
@@ -281,13 +292,13 @@ These links are single-use and do not require you to log in.`,
       html: buildEmailHtml(`
         <h2 style="margin-top:0;color:#1a2240;">New Review Submitted</h2>
         <table cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
-          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;width:120px;">Name</td><td>${data.name ?? ""}</td></tr>
-          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">School</td><td>${data.school ?? ""}</td></tr>
-          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">HSC Result</td><td>${data.result ?? "Not provided"}</td></tr>
-          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Rating</td><td>${data.rating ?? ""}/5</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;width:120px;">Name</td><td>${escapeHtml(data.name)}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">School</td><td>${escapeHtml(data.school)}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">HSC Result</td><td>${escapeHtml(data.result) || "Not provided"}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:bold;">Rating</td><td>${escapeHtml(data.rating)}/5</td></tr>
         </table>
         <p style="margin:16px 0 8px 0;"><strong>Testimonial:</strong></p>
-        <p style="margin:0 0 24px 0;padding:12px 16px;background:#f8f5f0;border-left:4px solid #c9a84c;border-radius:4px;">${(data.testimonial ?? "").replace(/\n/g, "<br/>")}</p>
+        <p style="margin:0 0 24px 0;padding:12px 16px;background:#f8f5f0;border-left:4px solid #c9a84c;border-radius:4px;">${escapeHtml(data.testimonial).replace(/\n/g, "<br/>")}</p>
         <hr style="border:none;border-top:1px solid #e5e0d8;margin:24px 0;"/>
         <p style="margin:0 0 16px 0;">
           <a href="${approveUrl}" style="display:inline-block;padding:12px 24px;background:#c9a84c;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;margin-right:12px;">Approve Review</a>
@@ -295,6 +306,8 @@ These links are single-use and do not require you to log in.`,
         </p>
         <p style="margin:0;font-size:12px;color:#999;">These links are single-use and do not require you to log in to Firebase.</p>
       `),
+    }).catch((err: unknown) => {
+      console.error("[onReviewCreated] Failed to send admin notification:", err);
     });
   }
 );
@@ -468,7 +481,7 @@ export const onResourceSignupCreated = onDocumentCreated(
         <p style="margin:0 0 16px 0;">Stay tuned - exciting updates are on their way!</p>
         <p style="margin:0 0 16px 0;">If you have any questions, feel free to reach out at
           <a href="mailto:${ADMIN_EMAIL}" style="color:#c9a84c;">${ADMIN_EMAIL}</a>
-          or call us at 0431 878 221.
+          or call us at ${CONTACT_PHONE}.
         </p>
         <p style="margin:0;">Warm regards,<br/><strong>English Excellence</strong></p>
       `;
