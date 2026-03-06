@@ -53,7 +53,7 @@ const ADMIN_EMAIL = "leo@eehsc.com";
 function getFunctionsBaseUrl(): string {
   return (
     process.env.FUNCTIONS_BASE_URL ??
-    "https://asia-southeast1-english-excellence-hsc.cloudfunctions.net"
+    "https://us-central1-english-excellence-1bc2a.cloudfunctions.net"
   );
 }
 
@@ -123,6 +123,8 @@ Warm regards,
 English Excellence
 ${ADMIN_EMAIL}`;
 
+const REGION = "us-central1";
+
 // ---------------------------------------------------------------------------
 // Trigger: new inquiry
 // ---------------------------------------------------------------------------
@@ -134,7 +136,7 @@ ${ADMIN_EMAIL}`;
  *   2. A confirmation email to the user.
  */
 export const onInquiryCreated = onDocumentCreated(
-  "inquiries/{inquiryId}",
+  { document: "inquiries/{inquiryId}", region: REGION },
   async (event) => {
     const data = event.data?.data();
     if (!data) return;
@@ -195,7 +197,7 @@ export const onInquiryCreated = onDocumentCreated(
  *   the review can be actioned immediately without logging into Firebase.
  */
 export const onReviewCreated = onDocumentCreated(
-  "reviews/{reviewId}",
+  { document: "reviews/{reviewId}", region: REGION },
   async (event) => {
     const data = event.data?.data();
     if (!data) return;
@@ -283,7 +285,7 @@ export const onReviewCreated = onDocumentCreated(
  * The link is included in the admin notification email sent by
  * onReviewCreated.  No Firebase login is required.
  */
-export const reviewAction = onRequest(async (req, res) => {
+export const reviewAction = onRequest({ region: REGION }, async (req, res) => {
   const { reviewId, action, token } = req.query as Record<string, string>;
 
   if (!reviewId || !action || !token) {
@@ -416,7 +418,7 @@ export const reviewAction = onRequest(async (req, res) => {
  * Sends a welcome email to the subscriber.
  */
 export const onResourceSignupCreated = onDocumentCreated(
-  "resource_signups/{signupId}",
+  { document: "resource_signups/{signupId}", region: REGION },
   async (event) => {
     const data = event.data?.data();
     if (!data) return;
