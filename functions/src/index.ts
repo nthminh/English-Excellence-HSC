@@ -74,14 +74,14 @@ function buildActionHtml(title: string, message: string): string {
 
 const INQUIRY_CONFIRMATION_MESSAGE = `Thank you for reaching out to English Excellence.
 
-We\'\'\'ve received your enquiry regarding a trial class. A member of our team \\
-will be in touch shortly using the phone number you provided to organise a \\
+We've received your enquiry regarding a trial class. A member of our team 
+will be in touch shortly using the phone number you provided to organise a 
 suitable time and discuss the next steps.
 
-During this call, we\'\'\'ll also take a moment to understand the student\'\'\'s current \\
-level, upcoming assessments, and goals to ensure the trial lesson is as useful \\
-and personalised as possible. If there are any concerns between now and then, \\
-don\'\'\'t be afraid to contact us. (0431878221)
+During this call, we'll also take a moment to understand the student's current 
+level, upcoming assessments, and goals to ensure the trial lesson is as useful 
+and personalised as possible. If there are any concerns between now and then, 
+don't be afraid to contact us. (0431878221)
 
 We look forward to speaking with you soon.
 
@@ -90,7 +90,7 @@ English Excellence`;
 
 const STAY_IN_TOUCH_WELCOME_MESSAGE = `Hi there,
 
-Welcome to English Excellence! We\'\'\'re thrilled to have you join our community.
+Welcome to English Excellence! We're thrilled to have you join our community.
 
 As a subscriber, we will keep you up to date with:
 - The latest course information and new programmes
@@ -100,7 +100,7 @@ As a subscriber, we will keep you up to date with:
 
 Stay tuned — exciting updates are on their way!
 
-If you have any questions, feel free to reach out at ${ADMIN_EMAIL} \\
+If you have any questions, feel free to reach out at ${ADMIN_EMAIL} 
 or call us at 0431 878 221.
 
 Warm regards,
@@ -142,16 +142,14 @@ export const onInquiryCreated = onDocumentCreated(
       from,
       to: ADMIN_EMAIL,
       subject: `New Trial Inquiry – ${parentName}`,
-      text: [
-        `New inquiry received:`,
-        ``,
-        `Parent Name:    ${parentName}`,
-        `Child Name:     ${childName}`,
-        `Phone:          ${data.phone ?? ""}`,
-        `Email:          ${data.email ?? ""}`,
-        `Year Level:     ${data.yearLevel ?? ""}`,
-        `English Level:  ${englishLevel}`,
-      ].join("\\n"),
+      text: `New inquiry received:
+
+Parent Name:    ${parentName}
+Child Name:     ${childName}
+Phone:          ${data.phone ?? ""}
+Email:          ${data.email ?? ""}
+Year Level:     ${data.yearLevel ?? ""}
+English Level:  ${englishLevel}`,
     }).catch((err: unknown) => {
       console.error("[onInquiryCreated] Failed to send admin notification:", err);
     });
@@ -209,27 +207,25 @@ export const onReviewCreated = onDocumentCreated(
       from,
       to: ADMIN_EMAIL,
       subject: `New Review Submitted – ${data.name ?? "Anonymous"} (${data.rating ?? "?"}/5)`,
-      text: [
-        `A new review has been submitted and is pending approval:`,
-        ``,
-        `Name:        ${data.name ?? ""}`,
-        `School:      ${data.school ?? ""}`,
-        `HSC Result:  ${data.result ?? "Not provided"}`,
-        `Rating:      ${data.rating ?? ""}/5`,
-        ``,
-        `Testimonial:`,
-        data.testimonial ?? "",
-        ``,
-        `──────────────────────────────────────`,
-        ``,
-        `✅ APPROVE this review (click to publish):`,
-        approveUrl,
-        ``,
-        `❌ REJECT this review (click to discard):`,
-        rejectUrl,
-        ``,
-        `These links are single-use and do not require you to log in.`,
-      ].join("\\n"),
+      text: `A new review has been submitted and is pending approval:
+
+Name:        ${data.name ?? ""}
+School:      ${data.school ?? ""}
+HSC Result:  ${data.result ?? "Not provided"}
+Rating:      ${data.rating ?? ""}/5
+
+Testimonial:
+${data.testimonial ?? ""}
+
+──────────────────────────────────────
+
+✅ APPROVE this review (click to publish):
+${approveUrl}
+
+❌ REJECT this review (click to discard):
+${rejectUrl}
+
+These links are single-use and do not require you to log in.`,
       html: [
         `<p>A new review has been submitted and is pending approval:</p>`,
         `<table style="border-collapse:collapse;font-family:sans-serif;">`,
@@ -238,7 +234,7 @@ export const onReviewCreated = onDocumentCreated(
         `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">HSC Result</td><td>${data.result ?? "Not provided"}</td></tr>`,
         `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Rating</td><td>${data.rating ?? ""}/5</td></tr>`,
         `</table>`,
-        `<p><strong>Testimonial:</strong><br/>${(data.testimonial ?? "").replace(/\\n/g, "<br/>")}</p>`,
+        `<p><strong>Testimonial:</strong><br/>${(data.testimonial ?? "").replace(/\n/g, "<br/>")}</p>`,
         `<hr/>`,
         `<p>`,
         `  <a href="${approveUrl}" style="display:inline-block;padding:12px 24px;background:#c9a84c;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;margin-right:12px;">`,
@@ -249,7 +245,7 @@ export const onReviewCreated = onDocumentCreated(
         `  </a>`,
         `</p>`,
         `<p style="font-size:0.8em;color:#888;">These links are single-use and do not require you to log in to Firebase.</p>`,
-      ].join("\\n"),
+      ].join("\n"),
     });
   }
 );
@@ -352,7 +348,7 @@ export const reviewAction = onRequest({ region: REGION }, async (req, res) => {
     return;
   }
 
-  // Idempotency guard – don\'t re-process an already actioned review.
+  // Idempotency guard – don't re-process an already actioned review.
   if (
     reviewData.status === "approved" ||
     reviewData.status === "rejected"
