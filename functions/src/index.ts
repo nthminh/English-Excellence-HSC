@@ -130,13 +130,13 @@ ${ADMIN_EMAIL}`;
 // ---------------------------------------------------------------------------
 
 /**
- * Fires when a document is created in the \`inquiries\` collection.
+ * Fires when a document is created in the `inquiries` collection.
  * Sends:
  *   1. A notification email to the admin with the full inquiry details.
  *   2. A confirmation email to the user.
  */
 export const onInquiryCreated = onDocumentCreated(
-  "inquiries/{inquiryId}",
+  { document: "inquiries/{inquiryId}", region: "asia-southeast1" },
   async (event) => {
     const data = event.data?.data();
     if (!data) return;
@@ -159,14 +159,14 @@ export const onInquiryCreated = onDocumentCreated(
       to: ADMIN_EMAIL,
       subject: `New Trial Inquiry – ${parentName}`,
       text: [
-        \`New inquiry received:\`,
-        \`\`,
-        \`Parent Name:    ${parentName}\`,
-        \`Child Name:     ${childName}\`,
-        \`Phone:          ${data.phone ?? ""}\`,
-        \`Email:          ${data.email ?? ""}\`,
-        \`Year Level:     ${data.yearLevel ?? ""}\`,
-        \`English Level:  ${englishLevel}\`,
+        `New inquiry received:`,
+        ``,
+        `Parent Name:    ${parentName}`,
+        `Child Name:     ${childName}`,
+        `Phone:          ${data.phone ?? ""}`,
+        `Email:          ${data.email ?? ""}`,
+        `Year Level:     ${data.yearLevel ?? ""}`,
+        `English Level:  ${englishLevel}`,
       ].join("\n"),
     });
 
@@ -176,7 +176,7 @@ export const onInquiryCreated = onDocumentCreated(
         from,
         to: data.email as string,
         subject: "English Excellence – Trial Booking Received",
-        text: \`Hi ${data.parentFirstName ?? "there"},\n\n${INQUIRY_CONFIRMATION_MESSAGE}\`,
+        text: `Hi ${data.parentFirstName ?? "there"},\n\n${INQUIRY_CONFIRMATION_MESSAGE}`,
       });
     }
   }
@@ -187,13 +187,13 @@ export const onInquiryCreated = onDocumentCreated(
 // ---------------------------------------------------------------------------
 
 /**
- * Fires when a document is created in the \`reviews\` collection.
+ * Fires when a document is created in the `reviews` collection.
  * - Generates a one-time approval token and stores it on the document.
  * - Sends a notification email to the admin with approve / reject links so
  *   the review can be actioned immediately without logging into Firebase.
  */
 export const onReviewCreated = onDocumentCreated(
-  "reviews/{reviewId}",
+  { document: "reviews/{reviewId}", region: "asia-southeast1" },
   async (event) => {
     const data = event.data?.data();
     if (!data) return;
@@ -214,53 +214,53 @@ export const onReviewCreated = onDocumentCreated(
     const from = getFrom();
 
     const baseUrl = getFunctionsBaseUrl();
-    const approveUrl = \`${baseUrl}/reviewAction?reviewId=${encodeURIComponent(reviewId)}&action=approve&token=${approvalToken}\`;
-    const rejectUrl = \`${baseUrl}/reviewAction?reviewId=${encodeURIComponent(reviewId)}&action=reject&token=${approvalToken}\`;
+    const approveUrl = `${baseUrl}/reviewAction?reviewId=${encodeURIComponent(reviewId)}&action=approve&token=${approvalToken}`;
+    const rejectUrl = `${baseUrl}/reviewAction?reviewId=${encodeURIComponent(reviewId)}&action=reject&token=${approvalToken}`;
 
     await transporter.sendMail({
       from,
       to: ADMIN_EMAIL,
-      subject: \`New Review Submitted – ${data.name ?? "Anonymous"} (${data.rating ?? "?"}/5)\`,
+      subject: `New Review Submitted – ${data.name ?? "Anonymous"} (${data.rating ?? "?"}/5)`,
       text: [
-        \`A new review has been submitted and is pending approval:\`,
-        \`\`,
-        \`Name:        ${data.name ?? ""}\`,
-        \`School:      ${data.school ?? ""}\`,
-        \`HSC Result:  ${data.result ?? "Not provided"}\`,
-        \`Rating:      ${data.rating ?? ""}/5\`,
-        \`\`,
-        \`Testimonial:\`,
+        `A new review has been submitted and is pending approval:`,
+        ``,
+        `Name:        ${data.name ?? ""}`,
+        `School:      ${data.school ?? ""}`,
+        `HSC Result:  ${data.result ?? "Not provided"}`,
+        `Rating:      ${data.rating ?? ""}/5`,
+        ``,
+        `Testimonial:`,
         data.testimonial ?? "",
-        \`\`,
-        \`──────────────────────────────────────\`,
-        \`\`,
-        \`✅ APPROVE this review (click to publish):\`,
+        ``,
+        `──────────────────────────────────────`,
+        ``,
+        `✅ APPROVE this review (click to publish):`,
         approveUrl,
-        \`\`,
-        \`❌ REJECT this review (click to discard):\`,
+        ``,
+        `❌ REJECT this review (click to discard):`,
         rejectUrl,
-        \`\`,
-        \`These links are single-use and do not require you to log in.\`,
+        ``,
+        `These links are single-use and do not require you to log in.`,
       ].join("\n"),
       html: [
-        \`<p>A new review has been submitted and is pending approval:</p>\`,
-        \`<table style="border-collapse:collapse;font-family:sans-serif;">\`,
-        \`  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name</td><td>${data.name ?? ""}</td></tr>\`,
-        \`  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">School</td><td>${data.school ?? ""}</td></tr>\`,
-        \`  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">HSC Result</td><td>${data.result ?? "Not provided"}</td></tr>\`,
-        \`  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Rating</td><td>${data.rating ?? ""}/5</td></tr>\`,
-        \`</table>\`,
-        \`<p><strong>Testimonial:</strong><br/>${(data.testimonial ?? "").replace(/\n/g, "<br/>")}</p>\`,
-        \`<hr/>\`,
-        \`<p>\`,
-        \`  <a href="${approveUrl}" style="display:inline-block;padding:12px 24px;background:#c9a84c;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;margin-right:12px;">\`,
-        \`    ✅ Approve Review\`,
-        \`  </a>\`,
-        \`  <a href="${rejectUrl}" style="display:inline-block;padding:12px 24px;background:#c0392b;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;">\`,
-        \`    ❌ Reject Review\`,
-        \`  </a>\`,
-        \`</p>\`,
-        \`<p style="font-size:0.8em;color:#888;">These links are single-use and do not require you to log in to Firebase.</p>\`
+        `<p>A new review has been submitted and is pending approval:</p>`,
+        `<table style="border-collapse:collapse;font-family:sans-serif;">`,
+        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name</td><td>${data.name ?? ""}</td></tr>`,
+        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">School</td><td>${data.school ?? ""}</td></tr>`,
+        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">HSC Result</td><td>${data.result ?? "Not provided"}</td></tr>`,
+        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Rating</td><td>${data.rating ?? ""}/5</td></tr>`,
+        `</table>`,
+        `<p><strong>Testimonial:</strong><br/>${(data.testimonial ?? "").replace(/\n/g, "<br/>")}</p>`,
+        `<hr/>`,
+        `<p>`,
+        `  <a href="${approveUrl}" style="display:inline-block;padding:12px 24px;background:#c9a84c;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;margin-right:12px;">`,
+        `    ✅ Approve Review`,
+        `  </a>`,
+        `  <a href="${rejectUrl}" style="display:inline-block;padding:12px 24px;background:#c0392b;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;">`,
+        `    ❌ Reject Review`,
+        `  </a>`,
+        `</p>`,
+        `<p style="font-size:0.8em;color:#888;">These links are single-use and do not require you to log in to Firebase.</p>`
       ].join("\n"),
     });
   }
@@ -281,7 +281,9 @@ export const onReviewCreated = onDocumentCreated(
  * The link is included in the admin notification email sent by
  * onReviewCreated.  No Firebase login is required.
  */
-export const reviewAction = onRequest(async (req, res) => {
+export const reviewAction = onRequest(
+  { region: "asia-southeast1" },
+  async (req, res) => {
   const { reviewId, action, token } = req.query as Record<string, string>;
 
   if (!reviewId || !action || !token) {
@@ -375,7 +377,7 @@ export const reviewAction = onRequest(async (req, res) => {
       .send(
         buildActionHtml(
           "Already Processed",
-          \`This review was already <strong>${alreadyDone}</strong>. No further action is needed.\`
+          `This review was already <strong>${alreadyDone}</strong>. No further action is needed.`
         )
       );
     return;
@@ -410,11 +412,11 @@ export const reviewAction = onRequest(async (req, res) => {
 // ---------------------------------------------------------------------------
 
 /**
- * Fires when a document is created in the \`resource_signups\` collection.
+ * Fires when a document is created in the `resource_signups` collection.
  * Sends a welcome email to the subscriber.
  */
 export const onResourceSignupCreated = onDocumentCreated(
-  "resource_signups/{signupId}",
+  { document: "resource_signups/{signupId}", region: "asia-southeast1" },
   async (event) => {
     const data = event.data?.data();
     if (!data) return;
@@ -427,7 +429,7 @@ export const onResourceSignupCreated = onDocumentCreated(
         from,
         to: data.email as string,
         subject: "Welcome to English Excellence!",
-        text: \`Hi ${data.name ?? "there"},\n\n${STAY_IN_TOUCH_WELCOME_MESSAGE}\`,
+        text: `Hi ${data.name ?? "there"},\n\n${STAY_IN_TOUCH_WELCOME_MESSAGE}`,
       });
     }
   }
