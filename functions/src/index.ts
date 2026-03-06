@@ -39,7 +39,7 @@ function getFrom(): string {
   return process.env.EMAIL_FROM ?? process.env.EMAIL_USER ?? ADMIN_EMAIL;
 }
 
-const ADMIN_EMAIL = "leo@eehsc.com";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "leo@eehsc.com";
 
 /**
  * Base URL for Cloud Functions used when building approve/reject links.
@@ -55,6 +55,16 @@ function getFunctionsBaseUrl(): string {
     process.env.FUNCTIONS_BASE_URL ??
     "https://asia-southeast1-english-excellence-hsc.cloudfunctions.net"
   );
+}
+
+/** Escape HTML special characters to prevent malformed email HTML bodies. */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 /** Render a minimal HTML confirmation page for the reviewAction endpoint. */
@@ -168,6 +178,8 @@ export const onInquiryCreated = onDocumentCreated(
         `Year Level:     ${data.yearLevel ?? ""}`,
         `English Level:  ${englishLevel}`,
       ].join("\n"),
+    }).catch((err: unknown) => {
+      console.error("[onInquiryCreated] Failed to send admin notification email:", err);
     });
 
     // 2. Send confirmation to the user
@@ -177,6 +189,8 @@ export const onInquiryCreated = onDocumentCreated(
         to: data.email as string,
         subject: "English Excellence – Trial Booking Received",
         text: `Hi ${data.parentFirstName ?? "there"},\n\n${INQUIRY_CONFIRMATION_MESSAGE}`,
+      }).catch((err: unknown) => {
+        console.error("[onInquiryCreated] Failed to send user confirmation email:", err);
       });
     }
   }
@@ -245,12 +259,12 @@ export const onReviewCreated = onDocumentCreated(
       html: [
         `<p>A new review has been submitted and is pending approval:</p>`,
         `<table style="border-collapse:collapse;font-family:sans-serif;">`,
-        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name</td><td>${data.name ?? ""}</td></tr>`,
-        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">School</td><td>${data.school ?? ""}</td></tr>`,
-        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">HSC Result</td><td>${data.result ?? "Not provided"}</td></tr>`,
-        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Rating</td><td>${data.rating ?? ""}/5</td></tr>`,
+        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Name</td><td>${escapeHtml(String(data.name ?? ""))}</td></tr>`,
+        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">School</td><td>${escapeHtml(String(data.school ?? ""))}</td></tr>`,
+        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">HSC Result</td><td>${escapeHtml(String(data.result ?? "Not provided"))}</td></tr>`,
+        `  <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Rating</td><td>${escapeHtml(String(data.rating ?? ""))}/5</td></tr>`,
         `</table>`,
-        `<p><strong>Testimonial:</strong><br/>${(data.testimonial ?? "").replace(/\n/g, "<br/>")}</p>`,
+        `<p><strong>Testimonial:</strong><br/>${escapeHtml(String(data.testimonial ?? "")).replace(/\n/g, "<br/>")}</p>`,
         `<hr/>`,
         `<p>`,
         `  <a href="${approveUrl}" style="display:inline-block;padding:12px 24px;background:#c9a84c;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;margin-right:12px;">`,
@@ -262,6 +276,8 @@ export const onReviewCreated = onDocumentCreated(
         `</p>`,
         `<p style="font-size:0.8em;color:#888;">These links are single-use and do not require you to log in to Firebase.</p>`
       ].join("\n"),
+    }).catch((err: unknown) => {
+      console.error("[onReviewCreated] Failed to send admin notification email:", err);
     });
   }
 );
@@ -430,6 +446,8 @@ export const onResourceSignupCreated = onDocumentCreated(
         to: data.email as string,
         subject: "Welcome to English Excellence!",
         text: `Hi ${data.name ?? "there"},\n\n${STAY_IN_TOUCH_WELCOME_MESSAGE}`,
+      }).catch((err: unknown) => {
+        console.error("[onResourceSignupCreated] Failed to send welcome email:", err);
       });
     }
   }
