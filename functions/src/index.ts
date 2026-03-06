@@ -49,7 +49,7 @@ function buildEmailHtml(bodyHtml: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>English Excellence</title>
 </head>
@@ -115,20 +115,7 @@ function buildActionHtml(title: string, message: string): string {
 </html>`;
 }
 
-const INQUIRY_CONFIRMATION_MESSAGE = `Thank you for reaching out to English Excellence.
-
-We've received your enquiry regarding a trial class. A member of our team will be in touch shortly using the phone number you provided to organise a suitable time and discuss the next steps.
-
-During this call, we'll also take a moment to understand the student's current level, upcoming assessments, and goals to ensure the trial lesson is as useful and personalised as possible. If there are any concerns between now and then, don't be afraid to contact us. (0431878221)
-
-We look forward to speaking with you soon.
-
-Kind regards,
-English Excellence`;
-
-const STAY_IN_TOUCH_WELCOME_MESSAGE = `Hi there,
-
-Welcome to English Excellence! We're thrilled to have you join our community.
+const STAY_IN_TOUCH_WELCOME_MESSAGE = `Welcome to English Excellence! We’re thrilled to have you join our community.
 
 As a subscriber, we will keep you up to date with:
 - The latest course information and new programmes
@@ -179,8 +166,7 @@ export const onInquiryCreated = onDocumentCreated(
       from,
       to: ADMIN_EMAIL,
       subject: `New Trial Inquiry - ${parentName}`,
-      text: `New inquiry received:
-
+      text: `New inquiry received:\n
 Parent Name:    ${parentName}
 Child Name:     ${childName}
 Phone:          ${data.phone ?? ""}
@@ -204,15 +190,29 @@ English Level:  ${englishLevel}`,
 
     // 2. Send confirmation to the user
     if (data.email) {
-      const confirmationBodyHtml = INQUIRY_CONFIRMATION_MESSAGE
-        .split("\n\n")
-        .map((para) => `<p style="margin:0 0 16px 0;">${para.replace(/\n/g, "<br/>")}</p>`)
-        .join("");
+      const confirmationBodyHtml = `
+<p style="margin:0 0 16px 0;">Thank you for reaching out to English Excellence.</p>
+<p style="margin:0 0 16px 0;">We’ve received your enquiry regarding a trial class. A member of our team will be in touch shortly using the phone number you provided to organise a suitable time and discuss the next steps.</p>
+<p style="margin:0 0 16px 0;">During this call, we’ll also take a moment to understand the student’s current level, upcoming assessments, and goals to ensure the trial lesson is as useful and personalised as possible. If there are any concerns between now and then, don’t be afraid to contact us. (0431878221)</p>
+<p style="margin:0 0 16px 0;">We look forward to speaking with you soon.</p>
+<p style="margin:0 0 16px 0;">Kind regards,<br/>English Excellence</p>
+`;
+      const confirmationText = `Thank you for reaching out to English Excellence.
+
+We’ve received your enquiry regarding a trial class. A member of our team will be in touch shortly using the phone number you provided to organise a suitable time and discuss the next steps.
+
+During this call, we’ll also take a moment to understand the student’s current level, upcoming assessments, and goals to ensure the trial lesson is as useful and personalised as possible. If there are any concerns between now and then, don’t be afraid to contact us. (0431878221)
+
+We look forward to speaking with you soon.
+
+Kind regards,
+English Excellence`;
+
       await transporter.sendMail({
         from,
         to: data.email as string,
         subject: "English Excellence - Trial Booking Received",
-        text: `Hi ${data.parentFirstName ?? "there"},\n\n${INQUIRY_CONFIRMATION_MESSAGE}`,
+        text: `Hi ${data.parentFirstName ?? "there"},\n\n${confirmationText}`,
         html: buildEmailHtml(`<p style="margin:0 0 16px 0;">Hi ${data.parentFirstName ?? "there"},</p>${confirmationBodyHtml}`),
       }).catch((err: unknown) => {
         console.error("[onInquiryCreated] Failed to send user confirmation email:", err);
@@ -260,8 +260,7 @@ export const onReviewCreated = onDocumentCreated(
       from,
       to: ADMIN_EMAIL,
       subject: `New Review Submitted - ${data.name ?? "Anonymous"} (${data.rating ?? "?"}/5)`,
-      text: `A new review has been submitted and is pending approval:
-
+      text: `A new review has been submitted and is pending approval:\n
 Name:        ${data.name ?? ""}
 School:      ${data.school ?? ""}
 HSC Result:  ${data.result ?? "Not provided"}
@@ -458,8 +457,7 @@ export const onResourceSignupCreated = onDocumentCreated(
 
     if (data.email) {
       const welcomeBodyHtml = `
-        <p style="margin:0 0 16px 0;">Hi ${data.name ?? "there"},</p>
-        <p style="margin:0 0 16px 0;">Welcome to English Excellence! We're thrilled to have you join our community.</p>
+        <p style="margin:0 0 16px 0;">Welcome to English Excellence! We’re thrilled to have you join our community.</p>
         <p style="margin:0 0 8px 0;">As a subscriber, we will keep you up to date with:</p>
         <ul style="margin:0 0 16px 0;padding-left:20px;">
           <li style="margin-bottom:6px;">The latest course information and new programmes</li>
@@ -478,7 +476,7 @@ export const onResourceSignupCreated = onDocumentCreated(
         from,
         to: data.email as string,
         subject: "Welcome to English Excellence!",
-        text: `Hi ${data.name ?? "there"},\n\n${STAY_IN_TOUCH_WELCOME_MESSAGE}`,
+        text: STAY_IN_TOUCH_WELCOME_MESSAGE,
         html: buildEmailHtml(welcomeBodyHtml),
       }).catch((err: unknown) => {
         console.error("[onResourceSignupCreated] Failed to send welcome email:", err);
