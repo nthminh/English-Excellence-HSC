@@ -4,24 +4,24 @@ import { Plus, Minus, HelpCircle } from 'lucide-react';
 
 const faqs = [
   {
-    question: 'How does the "guaranteed improvement" work?',
-    answer: 'We are so confident in our methods that if you don\'t see a measurable improvement in your school assessment marks or internal rankings within the first term of tutoring, we will refund your fees. We track progress through regular mock assessments and feedback loops.'
+    question: 'How does the guaranteed improvement work?',
+    answer: 'If a student enrolled in our semester program does not show improvement, we will continue teaching them at no additional cost until they do. This guarantee applies exclusively to semester enrolments. The terms and conditions are covered further upon enrolment.'
   },
   {
     question: 'Where do the tutoring sessions take place?',
-    answer: 'We offer both in-person sessions at our Sydney CBD office and high-quality online sessions via Zoom. Our online platform includes interactive whiteboards and real-time document collaboration.'
+    answer: 'All sessions are conducted online via Zoom and/or Microsoft Teams.'
   },
   {
     question: 'What English subjects do you cover?',
-    answer: 'We specialize in HSC English Advanced, English Standard, and English Extension 1 & 2. We also provide support for Year 11 students preparing for their final year.'
+    answer: 'We specialise exclusively in HSC English, covering English Standard, Advanced, and Extension 1 & 2.'
   },
   {
     question: 'How often are the sessions?',
-    answer: 'Most students find that one 90-minute session per week is ideal. However, we can increase frequency during peak assessment periods or leading up to the Trial and HSC exams.'
+    answer: "Sessions are typically held once per week, with flexibility based on the student's schedule and workload."
   },
   {
     question: 'Do you provide feedback on drafts outside of sessions?',
-    answer: 'Yes! All our premium students get unlimited draft feedback. You can submit your essays or creative pieces anytime, and we will provide detailed annotations within 24-48 hours.'
+    answer: 'Yes. Students receive ongoing feedback and general support outside of lessons, with drafts reviewed within 24 hours after submission.'
   }
 ];
 
@@ -82,7 +82,7 @@ export function FAQ() {
             We're here to help. Reach out to us directly and we'll get back to you as soon as possible.
           </p>
           <a
-            href="mailto:Admin@eehsc.com"
+            href="mailto:contact@englishexcellence.com.au"
             className="bg-gold text-navy px-8 py-4 rounded-full font-bold hover:bg-opacity-90 transition-all inline-block"
           >
             Contact Support

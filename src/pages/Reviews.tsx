@@ -8,6 +8,22 @@ import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
 
 const staticReviews: Review[] = [
   {
+    id: 'static-andrew',
+    name: 'Andrew',
+    school: 'Normanhurst Boys',
+    result: '1st Place — English Advanced & Extension 1',
+    quote: "Leo's constructive feedback and guidance propelled me from rank 80/131 to securing 1st place in English Advanced as well as Extension 1 at Normanhurst Boys, the overall 5th most successful school in the HSC. His unwavering dedication and genuine care for his students is something I've never experienced before with any other tutor.",
+    rating: 5,
+  },
+  {
+    id: 'static-arsany-farhoud',
+    name: 'Arsany Farhoud',
+    school: 'St Marks College',
+    result: 'Year 12 Student',
+    quote: "I'm a Year 12 student at St Marks College completing both the advanced and extension english courses and English Excellence has made it all the more easier with the help and resources they've provided me. After going to other tutors and not seeing the results I wanted, English Excellence has been a game changer for my understanding and marks.",
+    rating: 5,
+  },
+  {
     id: 'static-jasmine-hakky',
     name: 'Jasmine Hakky',
     school: 'Previous Student',
